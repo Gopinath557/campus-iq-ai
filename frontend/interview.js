@@ -1,0 +1,17 @@
+const questions = ["Tell me about yourself.", "Why should we hire you?", "Describe a challenge you overcame.", "What are your strengths?", "Where do you see yourself in five years?"];
+const KEY = "campusiq_hr_answers"; const saved = JSON.parse(localStorage.getItem(KEY) || "[]"); let current = 0; let micStream; let recognition;
+const $ = (id) => document.querySelector(id);
+let captchaAnswer = 0;
+function makeCaptcha() { const a = Math.floor(Math.random() * 8) + 2; const b = Math.floor(Math.random() * 8) + 2; captchaAnswer = a + b; $("#captcha-question").textContent = `${a} + ${b} = ?`; $("#captcha-answer").value = ""; }
+let warnings = 0;
+function addWarning(reason) { warnings += 1; $("#warning-count").textContent = warnings; $(".integrity").classList.add("alert"); $("#integrity-message").textContent = `${reason} detected. Please remain on the interview page.`; }
+function metrics(){const wordTotal=saved.reduce((n,x)=>n+x.answer.split(/\s+/).filter(Boolean).length,0); $("#answers").textContent=saved.length; $("#words").textContent=wordTotal; $("#score").textContent=Math.min(100,Math.round(saved.length*20+wordTotal/2));}
+function speak(){speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance(questions[current]);speech.rate=.93;speech.onstart=()=>$("#hr-state").textContent="AI HR speaking";speech.onend=()=>$("#hr-state").textContent="AI HR listening";speechSynthesis.speak(speech);}
+$("#ask").onclick=speak; $("#next").onclick=()=>{current=(current+1)%questions.length;$("#question").textContent=questions[current];$("#answer").value="";speak();};
+$("#save").onclick=()=>{const answer=$("#answer").value.trim();if(answer.length<30){$("#feedback").textContent="Please add more detail before saving.";return;}if(Number($("#captcha-answer").value) !== captchaAnswer){$("#feedback").textContent="CAPTCHA answer is incorrect. Try again.";makeCaptcha();return;}saved.push({question:questions[current],answer});localStorage.setItem(KEY,JSON.stringify(saved));metrics();makeCaptcha();$("#feedback").textContent="Answer saved. Your interview score is updated.";};
+$("#refresh-captcha").onclick=makeCaptcha;
+$("#mic").onclick=async()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;try{micStream=await navigator.mediaDevices.getUserMedia({audio:true});$("#mic").disabled=true;$("#stop").disabled=false;if(!SR){$("#feedback").textContent="Mic is on. Speech-to-text is unavailable; type your answer.";return;}recognition=new SR();recognition.continuous=true;recognition.interimResults=true;recognition.lang="en-IN";recognition.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript;$("#answer").value=t;};recognition.start();$("#feedback").textContent="Listening…";}catch{$("#feedback").textContent="Allow microphone permission and try again.";}};
+$("#stop").onclick=()=>{recognition?.stop();micStream?.getTracks().forEach(t=>t.stop());$("#mic").disabled=false;$("#stop").disabled=true;$("#feedback").textContent="Microphone stopped.";}; metrics(); makeCaptcha();
+document.addEventListener("visibilitychange", () => { if (document.hidden) addWarning("Tab switch"); });
+window.addEventListener("blur", () => { if (!document.hidden) addWarning("Window focus change"); });
+$("#answer").addEventListener("paste", (event) => { event.preventDefault(); addWarning("Paste action"); $("#feedback").textContent = "Paste is disabled during interview practice. Please answer in your own words."; });

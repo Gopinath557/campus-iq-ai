@@ -1,0 +1,12 @@
+const data = JSON.parse(localStorage.getItem("campusiq_local_profile") || '{"profile":{},"skills":[],"projects":[],"resume":{}}');
+const profile = data.profile || {}, resume = data.resume || {}; const $ = (id) => document.querySelector(id);
+const text = (value, fallback) => value || fallback;
+$("#name").textContent = text(profile.fullName, "Your Name");
+$("#contact").textContent = [profile.email, profile.registerNumber, profile.department].filter(Boolean).join(" | ") || "Email | Register number | Department";
+$("#objective").textContent = text(resume.objective, "Add your objective from the dashboard.");
+$("#education").textContent = profile.department ? `${profile.department}${profile.registerNumber ? ` | Register Number: ${profile.registerNumber}` : ""}` : "Add your department and register number from the dashboard.";
+$("#skills").textContent = data.skills?.length ? data.skills.join(" | ") : "Add skills from the dashboard.";
+const projects = $("#projects"); projects.innerHTML = ""; (data.projects?.length ? data.projects : [{title:"Add projects from the dashboard.",description:""}]).forEach(project => { const li=document.createElement("li"); const strong=document.createElement("strong"); strong.textContent=project.title; li.append(strong); if(project.description){li.append(document.createTextNode(` — ${project.description}`));} projects.append(li); });
+$("#achievement").textContent = text(resume.achievement, "Add an achievement from the dashboard.");
+$("#download").onclick = () => { const content = $("#resume-paper").innerText; const blob = new Blob([content], {type:"text/plain"}); const url=URL.createObjectURL(blob); const link=document.createElement("a"); link.href=url; link.download=`${(profile.fullName || "CampusIQ").replace(/\s+/g,"-")}-ATS-Resume.txt`; link.click(); URL.revokeObjectURL(url); };
+$("#print").onclick = () => window.print();

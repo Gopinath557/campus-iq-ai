@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CampusIQ AI profile workspace" />
+    <title>CampusIQ AI | Profile workspace</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>.hr-redirect { display: inline-block; margin-top: 8px; padding: 12px 17px; border-radius: 9px; background: #6299f7; color: #07152d; text-decoration: none; font-weight: 780; }.hr-redirect:hover { background: #82b0ff; }</style>
+    <style>
+      .video-stage { position: relative; display: grid; place-items: center; min-height: 205px; overflow: hidden; margin-bottom: 11px; border: 1px solid #405273; border-radius: 12px; background: #0b1322; }
+      .video-stage video { width: 100%; height: 205px; object-fit: cover; }
+      .video-placeholder { position: absolute; inset: 0; display: grid; place-content: center; gap: 5px; text-align: center; color: #b6c3d9; background: radial-gradient(circle, #1e365e, #0b1322); }
+      .video-placeholder span { color: #73a7ff; font-size: 2rem; }.video-placeholder small { color: #93a5c2; font-size: .75rem; }
+      .interviewer-badge { position: absolute; bottom: 10px; left: 10px; display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; background: #07111de8; }.interviewer-badge > span { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: #6399f7; color: #07152d; font-size: .65rem; font-weight: 800; }.interviewer-badge div { display: grid; }.interviewer-badge strong { font-size: .75rem; }.interviewer-badge small { color: #9dafca; font-size: .66rem; }
+      .camera-actions { display: flex; gap: 9px; margin-bottom: 20px; }.camera-actions button { font-size: .82rem; }
+      .hr-dashboard { display: grid; grid-template-columns: 1.15fr .85fr; gap: 12px; margin-bottom: 11px; }.hr-dashboard .video-stage { margin: 0; }.hr-insights { padding: 16px; border: 1px solid #405273; border-radius: 12px; background: linear-gradient(145deg, #1a2b48, #101a2b); }.hr-score { display: grid; grid-template-columns: auto auto; align-items: baseline; column-gap: 5px; margin: 13px 0; }.hr-score strong { font-size: 2.4rem; color: #83b0ff; }.hr-score span { color: #afc2e2; }.hr-score small { grid-column: span 2; color: #91a5c6; font-size: .72rem; }.hr-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }.hr-metrics div { display: grid; gap: 2px; padding: 8px 4px; border-radius: 7px; background: #101d31; text-align: center; }.hr-metrics strong { font-size: 1rem; }.hr-metrics span { color: #9db0ce; font-size: .64rem; }.hr-tip { margin: 14px 0 0; color: #c1d3ef; font-size: .75rem; line-height: 1.4; }
+      .ai-face { animation: glow 2s infinite; }.speaking .ai-face { animation: talk .35s infinite alternate; background: #86b1ff; }@keyframes glow { 50% { box-shadow: 0 0 12px #6399f7; } }@keyframes talk { to { transform: scale(1.18); box-shadow: 0 0 18px #8eb8ff; } }
+      @media(max-width: 600px) { .hr-dashboard { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top">CampusIQ <span>AI</span></a>
+      <nav><a href="#dashboard">Dashboard</a><a href="resume.html">Resume</a><a href="interview.html">HR practice</a></nav>
+    </header>
+    <main id="top" class="workspace">
+      <section class="hero">
+        <p class="eyebrow">No login required</p>
+        <h1>Build your student profile.</h1>
+        <p>Your details are saved privately in this browser. You can start right away.</p>
+        <a class="hr-redirect" href="interview.html">Start Virtual HR Interview →</a>
+        <a class="hr-redirect" href="resume.html">Generate ATS-Friendly Resume →</a>
+      </section>
+
+      <section class="dashboard" id="dashboard" aria-labelledby="dashboard-title">
+        <div><p class="eyebrow">Dashboard</p><h2 id="dashboard-title">Your career readiness</h2></div>
+        <div class="readiness"><div class="progress-ring"><strong id="readiness-score">0</strong><span>%</span></div><div><h3 id="readiness-label">Start your profile</h3><p id="readiness-copy">Add your details to see your readiness score.</p></div></div>
+        <div class="metrics"><div><strong id="metric-skills">0</strong><span>Skills</span></div><div><strong id="metric-projects">0</strong><span>Projects</span></div><div><strong id="metric-answers">0</strong><span>Interview answers</span></div></div>
+      </section>
+
+      <section class="grid">
+        <article class="panel profile-panel">
+          <div class="section-heading"><div><p class="eyebrow">Profile</p><h2>Your details</h2></div></div>
+          <form id="profile-form">
+            <label>Full name<input id="full-name" required maxlength="100" placeholder="e.g. Gopinath P" /></label>
+            <label>Email address<input id="email" type="email" required placeholder="you@example.com" /></label>
+            <label>Register number<input id="register-number" required maxlength="20" placeholder="e.g. 22CS001" /></label>
+            <label>Department<input id="department" maxlength="100" placeholder="e.g. Computer Science" /></label>
+            <button type="submit">Save profile</button>
+          </form>
+          <p class="message" id="profile-message" role="status"></p>
+        </article>
+
+        <article class="panel summary-panel">
+          <p class="eyebrow">Your profile</p>
+          <div class="avatar" id="avatar">?</div>
+          <h2 id="summary-name">Add your details</h2>
+          <p id="summary-info">Your profile summary will appear here.</p>
+          <div class="stat-row"><div><strong id="skill-count">0</strong><span>Skills</span></div><div><strong id="project-count">0</strong><span>Projects</span></div></div>
+        </article>
+
+        <article class="panel collection-panel">
+          <div class="section-heading"><div><p class="eyebrow">Skills</p><h2>What you know</h2></div></div>
+          <form class="inline-form" id="skill-form">
+            <input id="skill-input" required maxlength="60" placeholder="e.g. Python" />
+            <button type="submit">Add</button>
+          </form>
+          <ul class="tag-list" id="skill-list"></ul>
+        </article>
+
+        <article class="panel collection-panel">
+          <div class="section-heading"><div><p class="eyebrow">Projects</p><h2>What you built</h2></div></div>
+          <form class="project-form" id="project-form">
+            <input id="project-title" required maxlength="100" placeholder="Project title" />
+            <textarea id="project-description" maxlength="300" placeholder="A short description"></textarea>
+            <button type="submit">Add project</button>
+          </form>
+          <ul class="project-list" id="project-list"></ul>
+        </article>
+      </section>
+
+      <section class="feature-grid">
+        <article class="panel resume-builder" id="resume">
+          <div class="section-heading"><div><p class="eyebrow">Resume enhancer</p><h2>Make your resume stronger</h2></div></div>
+          <form id="resume-form">
+            <label>Career objective<textarea id="objective" maxlength="450" placeholder="Example: Computer Science student seeking a software engineering internship…"></textarea></label>
+            <label>Key achievement<input id="achievement" maxlength="180" placeholder="Example: Built a student project used by 100 classmates" /></label>
+            <button type="submit">Save resume content</button>
+          </form>
+          <div class="resume-preview"><p class="eyebrow">Resume preview</p><h3 id="resume-name">Your name</h3><p id="resume-contact">Email · Department</p><h4>Objective</h4><p id="resume-objective">Add an objective to begin.</p><h4>Skills</h4><p id="resume-skills">Add skills to your profile.</p><h4>Achievement</h4><p id="resume-achievement">Add one achievement that shows your impact.</p></div>
+          <a class="resume-link" href="resume.html">Open ATS-friendly resume generator →</a>
+        </article>
+
+        <article class="panel interview" id="interview">
+          <div class="section-heading"><div><p class="eyebrow">Virtual HR interview</p><h2>Practice your answer</h2></div></div>
+          <div class="hr-dashboard">
+          <div class="video-stage">
+            <video id="camera-preview" autoplay muted playsinline></video>
+            <div class="video-placeholder" id="video-placeholder"><span>◉</span><strong>Camera is off</strong><small>Start the camera for face-to-face practice.</small></div>
+            <div class="interviewer-badge" id="ai-character"><span class="ai-face">◉</span><div><strong>CampusIQ HR</strong><small id="ai-status">AI interviewer · Ready</small></div></div>
+          </div>
+          <div class="hr-insights"><p class="eyebrow">Interview analytics</p><div class="hr-score"><strong id="hr-score">0</strong><span>/ 100</span><small>Practice score</small></div><div class="hr-metrics"><div><strong id="answer-count">0</strong><span>Answers</span></div><div><strong id="word-count">0</strong><span>Words</span></div><div><strong id="question-count">5</strong><span>Questions</span></div></div><p class="hr-tip" id="hr-tip">Start with a confident introduction.</p></div>
+          </div>
+          <div class="camera-actions"><button id="start-camera" type="button">Start camera</button><button id="stop-camera" class="secondary" type="button" disabled>Stop camera</button><button id="ask-question" class="secondary" type="button">AI ask question</button></div>
+          <p class="question-label">Virtual interviewer asks</p>
+          <h3 id="interview-question">Tell me about yourself.</h3>
+          <textarea id="interview-answer" maxlength="1000" placeholder="Type your answer here. Aim for a clear 60–90 second response."></textarea>
+          <div class="interview-actions"><button id="start-mic" type="button">Start microphone</button><button id="stop-mic" class="secondary" type="button" disabled>Stop microphone</button><button id="save-answer" class="secondary" type="button">Save answer</button><button id="next-question" class="secondary" type="button">Next question</button></div>
+          <p class="message" id="interview-feedback" role="status"></p>
+          <div class="tips"><strong>Quick tip</strong><p>Use the STAR method: Situation, Task, Action, Result.</p></div>
+        </article>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
