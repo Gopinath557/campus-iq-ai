@@ -1,19 +1,331 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CampusIQ AI | Virtual HR</title><link rel="stylesheet" href="styles.css" />
-    <style>
-      .interview-page{width:min(1180px,calc(100% - 40px));margin:45px auto}.interview-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:24px}.hr-card,.session-card{padding:26px;border:1px solid #2d3a53;border-radius:18px;background:#142139}.hr-portrait{position:relative;overflow:hidden;margin:20px 0;border-radius:13px;background:#0b1322}.hr-portrait img{display:block;width:100%;height:480px;object-fit:cover}.live{position:absolute;top:12px;left:12px;padding:6px 10px;border-radius:16px;background:#091422d9;font-size:.75rem}.live i{display:inline-block;width:7px;height:7px;margin-right:6px;border-radius:50%;background:#67d796}.integrity{display:grid;grid-template-columns:1fr auto;gap:4px;padding:12px;border-radius:9px;border:1px solid #34517a;background:#10213a;font-size:.8rem}.integrity span{color:#a9bfdf}.integrity b{color:#83b0ff}.integrity p{grid-column:span 2;margin:2px 0 0;color:#9fb2cd}.integrity.alert{border-color:#e06868;background:#3b2029}.integrity.alert b{color:#ff9292}.question-box{padding:20px;margin:20px 0;border-left:3px solid #72a8ff;border-radius:8px;background:#101d31}.question-box p{margin:0;color:#adc0df}.question-box h2{margin:8px 0 0;line-height:1.3}.score-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.score-cards div{padding:13px 8px;border-radius:9px;background:#0f1b2d;text-align:center}.score-cards strong{display:block;font-size:1.45rem;color:#83b0ff}.score-cards span{color:#9eafca;font-size:.72rem}.session-card textarea{min-height:175px}.captcha{display:grid;grid-template-columns:1fr 86px auto;align-items:center;gap:8px;margin-top:12px;padding:10px;border:1px solid #3c5275;border-radius:9px;background:#101d31;font-size:.78rem}.captcha label{color:#bed0eb}.captcha input{padding:8px}.captcha button{padding:9px;font-size:.72rem}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.session-card .message{margin-bottom:0}.back{color:#9fc2ff;text-decoration:none}@media(max-width:800px){.interview-layout{grid-template-columns:1fr}.hr-portrait img{height:360px}}@media(max-width:480px){.captcha{grid-template-columns:1fr 70px}.captcha button{grid-column:span 2}}
-    </style>
-  </head>
-  <body>
-    <header class="topbar"><a class="brand" href="index.html">CampusIQ <span>AI</span></a><a class="back" href="index.html">← Dashboard</a></header>
-    <main class="interview-page"><p class="eyebrow">Dedicated interview room</p><h1>Virtual HR Interview</h1><p class="hero-copy">Practice face-to-face with your AI HR interviewer and track your progress.</p>
-      <section class="interview-layout">
-        <article class="hr-card"><div class="live"><i></i><span id="hr-state">AI HR ready</span></div><div class="hr-portrait"><img src="assets/virtual-hr.png" alt="CampusIQ AI virtual HR interviewer" /></div><button id="ask" type="button">AI ask question</button></article>
-        <article class="session-card"><p class="eyebrow">Live session</p><div class="integrity"><strong>Interview integrity</strong><span><b id="warning-count">0</b> warnings</span><p id="integrity-message">Stay on this page during your practice session.</p></div><div class="question-box"><p>CampusIQ HR asks</p><h2 id="question">Tell me about yourself.</h2></div><div class="score-cards"><div><strong id="answers">0</strong><span>Answers</span></div><div><strong id="words">0</strong><span>Words</span></div><div><strong id="score">0</strong><span>Score</span></div></div><textarea id="answer" placeholder="Speak using the microphone or type your answer here."></textarea><div class="captcha"><label for="captcha-answer">Verification: <strong id="captcha-question">Loading…</strong></label><input id="captcha-answer" inputmode="numeric" autocomplete="off" placeholder="Answer" /><button id="refresh-captcha" class="secondary" type="button">New CAPTCHA</button></div><div class="actions"><button id="mic" type="button">Start microphone</button><button id="stop" class="secondary" type="button" disabled>Stop microphone</button><button id="save" class="secondary" type="button">Save answer</button><button id="next" class="secondary" type="button">Next question</button></div><p class="message" id="feedback" role="status"></p><div class="tips"><strong>HR tip</strong><p id="tip">Keep your answer structured: introduction, strengths, and an example.</p></div></article>
-      </section>
-    </main><script src="interview.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusIQ AI | Virtual HR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">CampusIQ <span>AI</span></a>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="resume.html">Resume</a>
+      <a href="interview.html" class="active">HR Practice</a>
+      <a href="aptitude.html">Aptitude</a>
+    </nav>
+  </header>
+
+  <main class="interview-page">
+    <section class="hero">
+      <p class="eyebrow">Dedicated interview room</p>
+      <h1>Virtual HR Interview</h1>
+      <p>Practice face-to-face with your AI HR interviewer and track your progress.</p>
+    </section>
+
+    <section class="interview-layout">
+      <!-- LEFT: HR Character Card -->
+      <article class="hr-card">
+        <!-- Video-call chrome bar -->
+        <div class="hr-card-chrome">
+          <div class="chrome-left">
+            <div class="live" id="live-badge"><i></i><span id="hr-state">AI HR ready</span></div>
+          </div>
+          <div class="chrome-center"><span class="chrome-title">CampusIQ HR Interview</span></div>
+          <div class="chrome-right">
+            <span class="chrome-time" id="call-timer">00:00</span>
+            <span class="chrome-dot"></span>
+            <span class="chrome-quality" title="Connection quality">&#9679;&#9679;&#9679;&#9679;</span>
+          </div>
+        </div>
+
+        <div class="hr-stage" id="hr-stage">
+          <!-- User Camera Feed -->
+          <div class="user-camera-box" id="user-camera-box">
+            <div class="user-camera-off" id="user-camera-off">Camera<br>off</div>
+            <video id="user-camera" autoplay muted playsinline style="display:none"></video>
+            <div class="user-camera-label">You</div>
+          </div>
+
+          <!-- HR Character with office background -->
+          <div class="hr-character idle" id="hr-character">
+            <svg class="hr-main-svg" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5c8a0"/><stop offset="100%" stop-color="#e8b088"/></linearGradient>
+                <linearGradient id="skin-sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0a070"/><stop offset="100%" stop-color="#d4956a"/></linearGradient>
+                <linearGradient id="hair" x1="0" y1="0" x2=".3" y2="1"><stop offset="0%" stop-color="#1a0e04"/><stop offset="60%" stop-color="#2a1a0a"/><stop offset="100%" stop-color="#1a0e04"/></linearGradient>
+                <linearGradient id="blazer" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2d4a"/><stop offset="50%" stop-color="#152640"/><stop offset="100%" stop-color="#0f1e33"/></linearGradient>
+                <linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8eef8"/><stop offset="100%" stop-color="#d4e0f0"/></linearGradient>
+                <linearGradient id="desk" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B7355"/><stop offset="100%" stop-color="#6B5340"/></linearGradient>
+                <linearGradient id="desk-top" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#A0845C"/><stop offset="100%" stop-color="#8B7355"/></linearGradient>
+                <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0ede6"/><stop offset="100%" stop-color="#e8e4dc"/></linearGradient>
+                <linearGradient id="window" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8d4f0"/><stop offset="40%" stop-color="#87CEEB"/><stop offset="100%" stop-color="#6BB3D9"/></linearGradient>
+                <linearGradient id="plant-pot" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B4513"/><stop offset="100%" stop-color="#654321"/></linearGradient>
+                <linearGradient id="monitor" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a1a2e"/><stop offset="100%" stop-color="#16213e"/></linearGradient>
+                <linearGradient id="tie" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient>
+                <filter id="sh-sm"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity=".1"/></filter>
+                <filter id="sh-md"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity=".12"/></filter>
+              </defs>
+
+              <!-- === OFFICE BACKGROUND === -->
+              <rect x="0" y="0" width="400" height="350" fill="url(#wall)"/>
+              <rect x="0" y="340" width="400" height="10" fill="#c5b9a8"/>
+
+              <!-- Window with frame -->
+              <rect x="306" y="46" width="83" height="108" rx="4" fill="#4a3728" filter="url(#sh-sm)"/>
+              <rect x="310" y="50" width="75" height="100" rx="3" fill="url(#window)"/>
+              <line x1="347" y1="50" x2="347" y2="150" stroke="#e8e4dc" stroke-width="2"/>
+              <line x1="310" y1="100" x2="385" y2="100" stroke="#e8e4dc" stroke-width="2"/>
+              <path d="M306 46 Q310 70 308 100 Q312 75 316 46" fill="#d4c5b0" opacity=".6"/>
+              <path d="M385 46 Q381 70 383 100 Q379 75 375 46" fill="#d4c5b0" opacity=".6"/>
+              <!-- Clouds -->
+              <ellipse cx="330" cy="68" rx="14" ry="5" fill="white" opacity=".5"/>
+              <ellipse cx="338" cy="66" rx="10" ry="4" fill="white" opacity=".4"/>
+              <ellipse cx="365" cy="82" rx="10" ry="4" fill="white" opacity=".35"/>
+
+              <!-- Bookshelf -->
+              <rect x="15" y="60" width="80" height="120" rx="3" fill="#6B4226" filter="url(#sh-sm)"/>
+              <rect x="18" y="65" width="74" height="18" rx="1" fill="#8B6914"/>
+              <rect x="18" y="88" width="74" height="18" rx="1" fill="#8B6914"/>
+              <rect x="18" y="111" width="74" height="18" rx="1" fill="#8B6914"/>
+              <rect x="18" y="134" width="74" height="18" rx="1" fill="#8B6914"/>
+              <!-- Books row 1 -->
+              <rect x="22" y="66" width="8" height="16" rx="1" fill="#c0392b"/>
+              <rect x="32" y="68" width="7" height="14" rx="1" fill="#2980b9"/>
+              <rect x="41" y="67" width="9" height="15" rx="1" fill="#27ae60"/>
+              <rect x="52" y="66" width="6" height="16" rx="1" fill="#8e44ad"/>
+              <rect x="60" y="68" width="8" height="14" rx="1" fill="#e67e22"/>
+              <!-- Books row 2 -->
+              <rect x="22" y="89" width="10" height="16" rx="1" fill="#16a085"/>
+              <rect x="34" y="90" width="7" height="15" rx="1" fill="#d35400"/>
+              <rect x="43" y="89" width="8" height="16" rx="1" fill="#2c3e50"/>
+              <rect x="53" y="91" width="6" height="14" rx="1" fill="#c0392b"/>
+              <!-- Books row 3 -->
+              <rect x="22" y="112" width="7" height="16" rx="1" fill="#2980b9"/>
+              <rect x="31" y="113" width="9" height="15" rx="1" fill="#f39c12"/>
+              <rect x="42" y="112" width="6" height="16" rx="1" fill="#1abc9c"/>
+              <rect x="50" y="114" width="8" height="14" rx="1" fill="#9b59b6"/>
+
+              <!-- Framed certificate -->
+              <rect x="120" y="55" width="60" height="45" rx="2" fill="#f5f0e8" stroke="#8B6914" stroke-width="2" filter="url(#sh-sm)"/>
+              <rect x="128" y="62" width="44" height="3" rx="1" fill="#2c3e50" opacity=".4"/>
+              <rect x="132" y="68" width="36" height="2" rx="1" fill="#2c3e50" opacity=".3"/>
+              <rect x="136" y="73" width="28" height="2" rx="1" fill="#2c3e50" opacity=".3"/>
+              <circle cx="150" cy="86" r="6" fill="none" stroke="#8B6914" stroke-width="1"/>
+              <text x="150" y="89" text-anchor="middle" font-size="5" fill="#8B6914" font-weight="600">HR</text>
+
+              <!-- Potted plant -->
+              <rect x="15" y="195" width="30" height="25" rx="3" fill="url(#plant-pot)"/>
+              <rect x="12" y="192" width="36" height="6" rx="2" fill="#7a3b1e"/>
+              <path d="M30 192 Q20 160 15 145" stroke="#2d5016" stroke-width="2.5" fill="none"/>
+              <path d="M30 192 Q35 155 40 140" stroke="#2d5016" stroke-width="2.5" fill="none"/>
+              <path d="M30 192 Q25 165 18 155" stroke="#2d5016" stroke-width="2" fill="none"/>
+              <ellipse cx="14" cy="142" rx="10" ry="7" fill="#3a7d1e" opacity=".9"/>
+              <ellipse cx="42" cy="138" rx="10" ry="7" fill="#3a7d1e" opacity=".9"/>
+              <ellipse cx="17" cy="153" rx="9" ry="6" fill="#4a8d2e" opacity=".85"/>
+              <ellipse cx="25" cy="148" rx="8" ry="6" fill="#2d6a12" opacity=".8"/>
+
+              <!-- === DESK === -->
+              <rect x="30" y="340" width="340" height="15" rx="2" fill="url(#desk-top)" filter="url(#sh-md)"/>
+              <rect x="35" y="355" width="330" height="50" rx="2" fill="url(#desk)" opacity=".9"/>
+              <!-- Monitor -->
+              <rect x="270" y="328" width="80" height="12" rx="2" fill="#ddd"/>
+              <rect x="275" y="310" width="70" height="18" rx="2" fill="url(#monitor)"/>
+              <rect x="277" y="312" width="66" height="14" rx="1" fill="#1a3a5c"/>
+              <rect x="279" y="314" width="62" height="10" rx="1" fill="#0a2a4c" opacity=".8"/>
+              <text x="310" y="322" text-anchor="middle" font-size="4" fill="#6366f1" opacity=".7">CampusIQ</text>
+              <!-- Coffee mug -->
+              <rect x="50" y="330" width="18" height="14" rx="2" fill="#f5f0e8" stroke="#d4c5b0" stroke-width=".8"/>
+              <path d="M68 333 Q74 333 74 337 Q74 341 68 341" fill="none" stroke="#d4c5b0" stroke-width="1.2"/>
+              <!-- Steam from coffee -->
+              <path class="coffee-steam" d="M55 328 Q53 322 56 318" fill="none" stroke="#ccc" stroke-width=".8" opacity=".4"/>
+              <path class="coffee-steam" d="M60 327 Q58 320 61 315" fill="none" stroke="#ccc" stroke-width=".8" opacity=".3"/>
+              <!-- Notepad -->
+              <rect x="100" y="332" width="25" height="18" rx="1" fill="#fefde8" stroke="#e8e0c8" stroke-width=".5"/>
+              <line x1="104" y1="337" x2="121" y2="337" stroke="#c8d0e0" stroke-width=".4"/>
+              <line x1="104" y1="340" x2="118" y2="340" stroke="#c8d0e0" stroke-width=".4"/>
+              <line x1="104" y1="343" x2="120" y2="343" stroke="#c8d0e0" stroke-width=".4"/>
+              <line x1="104" y1="346" x2="115" y2="346" stroke="#c8d0e0" stroke-width=".4"/>
+              <!-- Pen -->
+              <rect x="130" y="335" width="22" height="3" rx="1.5" fill="#1a2d4a" transform="rotate(-8 141 336)"/>
+              <polygon points="152,335 155,336.5 152,338" fill="#334155" transform="rotate(-8 153 336.5)"/>
+
+              <!-- === CHARACTER BODY === -->
+              <g class="char-body">
+                <!-- Neck -->
+                <rect x="188" y="215" width="24" height="30" rx="8" fill="url(#skin)"/>
+                <!-- Blazer torso -->
+                <path d="M140 245 Q140 230 165 225 L200 220 L235 225 Q260 230 260 245 L268 340 L132 340 Z" fill="url(#blazer)" filter="url(#sh-sm)"/>
+                <!-- Lapels -->
+                <path d="M165 225 L155 260 L175 270 L185 235 Z" fill="#1a2d4a" stroke="#253a54" stroke-width=".5"/>
+                <path d="M235 225 L245 260 L225 270 L215 235 Z" fill="#1a2d4a" stroke="#253a54" stroke-width=".5"/>
+                <!-- Shirt -->
+                <path d="M185 230 L190 250 L200 258 L210 250 L215 230 Z" fill="url(#shirt)"/>
+                <!-- Tie -->
+                <path d="M196 233 L200 238 L204 233 L203 270 L200 275 L197 270 Z" fill="url(#tie)"/>
+                <circle cx="200" cy="234" r="2" fill="#4f46e5"/>
+                <!-- Buttons -->
+                <circle cx="200" cy="280" r="2.2" fill="#334155"/>
+                <circle cx="200" cy="300" r="2.2" fill="#334155"/>
+                <!-- Pocket square -->
+                <path d="M162 252 L168 252 L165 246 Z" fill="#6366f1" opacity=".7"/>
+                <!-- Name badge -->
+                <rect x="158" y="252" width="30" height="14" rx="2" fill="white" stroke="#e2e8f0" stroke-width=".5"/>
+                <rect x="161" y="254" width="20" height="3" rx="1" fill="#6366f1" opacity=".3"/>
+                <rect x="161" y="259" width="14" height="2" rx=".5" fill="#94a3b8" opacity=".4"/>
+                <text x="173" y="263" text-anchor="middle" font-size="3.5" fill="#1a2d4a" font-weight="600">Priya S.</text>
+
+                <!-- Left arm -->
+                <path d="M140 245 Q120 280 110 320 Q108 335 115 338" fill="url(#blazer)" stroke="#0f1e33" stroke-width=".5"/>
+                <ellipse cx="115" cy="338" rx="10" ry="7" fill="url(#skin)" class="char-hand-left"/>
+                <!-- Pen in left hand -->
+                <g class="char-pen">
+                  <rect x="102" y="330" width="18" height="2.5" rx="1" fill="#1a2d4a" transform="rotate(15 111 331)"/>
+                  <polygon points="120,330 123,331.2 120,332.5" fill="#334155" transform="rotate(15 121.5 331.2)"/>
+                </g>
+                <!-- Right arm -->
+                <path d="M260 245 Q280 280 290 320 Q292 335 285 338" fill="url(#blazer)" stroke="#0f1e33" stroke-width=".5"/>
+                <ellipse cx="285" cy="338" rx="10" ry="7" fill="url(#skin)" class="char-hand-right"/>
+              </g>
+
+              <!-- === HEAD === -->
+              <g class="char-head">
+                <ellipse cx="200" cy="160" rx="52" ry="60" fill="url(#skin)"/>
+                <ellipse cx="200" cy="175" rx="40" ry="25" fill="url(#skin-sh)" opacity=".15"/>
+                <!-- Hair -->
+                <path d="M148 130 Q148 85 200 80 Q252 85 252 130 Q250 105 235 95 Q220 88 200 86 Q180 88 165 95 Q150 105 148 130 Z" fill="url(#hair)"/>
+                <path d="M150 128 Q148 90 200 82 Q252 90 250 128 Q248 110 238 100 Q225 92 200 88 Q175 92 162 100 Q152 110 150 128 Z" fill="url(#hair)"/>
+                <path d="M170 90 Q185 84 200 86 Q215 84 230 90" fill="none" stroke="#3a2815" stroke-width="1.5" opacity=".3"/>
+                <path d="M148 130 Q145 140 148 155" fill="url(#hair)"/>
+                <path d="M252 130 Q255 140 252 155" fill="url(#hair)"/>
+                <!-- Ears + earrings -->
+                <ellipse cx="148" cy="155" rx="8" ry="11" fill="url(#skin)"/>
+                <ellipse cx="148" cy="155" rx="5" ry="7" fill="url(#skin-sh)" opacity=".2"/>
+                <ellipse cx="252" cy="155" rx="8" ry="11" fill="url(#skin)"/>
+                <ellipse cx="252" cy="155" rx="5" ry="7" fill="url(#skin-sh)" opacity=".2"/>
+                <circle cx="147" cy="160" r="2" fill="#d4af60" opacity=".8"/>
+                <circle cx="253" cy="160" r="2" fill="#d4af60" opacity=".8"/>
+
+                <!-- Eyebrows -->
+                <g class="brow-left" style="transform-origin:178px 130px">
+                  <path d="M165 128 Q178 122 192 127" fill="none" stroke="#2a1a0a" stroke-width="2.2" stroke-linecap="round"/>
+                </g>
+                <g class="brow-right" style="transform-origin:222px 130px">
+                  <path d="M208 127 Q222 122 235 128" fill="none" stroke="#2a1a0a" stroke-width="2.2" stroke-linecap="round"/>
+                </g>
+
+                <!-- Eyes -->
+                <g class="char-eye-left">
+                  <ellipse cx="178" cy="148" rx="16" ry="11" fill="white"/>
+                  <ellipse cx="180" cy="148" rx="8.5" ry="9" fill="#2a1a0a" class="pupil"/>
+                  <circle cx="182" cy="146" r="3" fill="white"/>
+                  <circle cx="176" cy="150" r="1.2" fill="white" opacity=".4"/>
+                  <path d="M162 148 Q170 137 178 136 Q186 137 194 148" fill="none" stroke="#c4956a" stroke-width="1.2" opacity=".4"/>
+                  <rect class="eyelid" x="162" y="137" width="32" height="22" rx="16" fill="url(#skin)" style="transform-origin:178px 148px"/>
+                </g>
+                <g class="char-eye-right">
+                  <ellipse cx="222" cy="148" rx="16" ry="11" fill="white"/>
+                  <ellipse cx="224" cy="148" rx="8.5" ry="9" fill="#2a1a0a" class="pupil"/>
+                  <circle cx="226" cy="146" r="3" fill="white"/>
+                  <circle cx="220" cy="150" r="1.2" fill="white" opacity=".4"/>
+                  <path d="M206 148 Q214 137 222 136 Q230 137 238 148" fill="none" stroke="#c4956a" stroke-width="1.2" opacity=".4"/>
+                  <rect class="eyelid" x="206" y="137" width="32" height="22" rx="16" fill="url(#skin)" style="transform-origin:222px 148px"/>
+                </g>
+
+                <!-- Nose -->
+                <path d="M197 155 Q200 170 203 155" fill="none" stroke="#d4a078" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M195 168 Q200 172 205 168" fill="none" stroke="#d4a078" stroke-width=".8" opacity=".5"/>
+
+                <!-- Mouth -->
+                <g class="char-mouth">
+                  <path d="M186 185 Q193 193 200 192 Q207 193 214 185" fill="#c06060" stroke="#a04848" stroke-width=".6"/>
+                  <line x1="190" y1="185" x2="210" y2="185" stroke="white" stroke-width="1.2" opacity=".6"/>
+                </g>
+
+                <!-- Smile lines + blush -->
+                <path d="M168 180 Q172 188 176 186" fill="none" stroke="#d4a080" stroke-width=".5" opacity=".4"/>
+                <path d="M232 180 Q228 188 224 186" fill="none" stroke="#d4a080" stroke-width=".5" opacity=".4"/>
+                <ellipse cx="168" cy="175" rx="10" ry="5" fill="#e8a0a0" opacity=".12"/>
+                <ellipse cx="232" cy="175" rx="10" ry="5" fill="#e8a0a0" opacity=".12"/>
+              </g>
+
+              <!-- Writing indicator -->
+              <g class="char-writing" opacity="0">
+                <path d="M115 335 Q118 330 121 335 Q124 340 121 345" fill="none" stroke="#6366f1" stroke-width=".8" opacity=".5"/>
+              </g>
+            </svg>
+
+            <!-- Status bar -->
+            <div class="hr-status-bar" id="hr-status-bar">
+              <div class="status-dot"></div>
+              <span class="status-name">Priya Sharma</span>
+              <span class="status-state" id="hr-status-text">&middot; HR Manager &middot; Ready</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hr-card-actions">
+          <button id="ask" type="button" class="btn btn-primary">AI ask question</button>
+          <button id="start-cam" class="btn btn-secondary" type="button">Start camera</button>
+          <button id="stop-cam" class="btn btn-secondary" type="button" disabled>Stop camera</button>
+        </div>
+      </article>
+
+      <!-- RIGHT: Session Card -->
+      <article class="session-card">
+        <p class="eyebrow">Live session</p>
+        <div class="role-picker">
+          <label for="role-select"><strong>Interview Role</strong></label>
+          <select id="role-select" class="input">
+            <option value="general">General / All Roles</option>
+            <option value="software">Software Engineer</option>
+            <option value="data">Data Scientist / Analyst</option>
+            <option value="web">Web / Full-Stack Developer</option>
+            <option value="cyber">Cybersecurity Analyst</option>
+            <option value="cloud">Cloud / DevOps Engineer</option>
+            <option value="ai">AI / ML Engineer</option>
+            <option value="mobile">Mobile App Developer</option>
+            <option value="uiux">UI/UX Designer</option>
+            <option value="business">Business Analyst</option>
+            <option value="marketing">Marketing / Digital Marketing</option>
+            <option value="hr">HR / People Operations</option>
+            <option value="finance">Finance / Accounting</option>
+            <option value="mechanical">Mechanical Engineer</option>
+            <option value="electrical">Electrical / Electronics Engineer</option>
+            <option value="civil">Civil Engineer</option>
+          </select>
+          <p class="hint" id="role-hint">Answering as: General</p>
+        </div>
+        <div class="integrity"><strong>Interview integrity</strong><span><b id="warning-count">0</b> / 5 warnings</span><p id="integrity-message">Stay on this page during your practice session. 5 violations will lock the session.</p></div>
+        <div class="question-box"><p>CampusIQ HR asks</p><h2 id="question">Tell me about yourself.</h2></div>
+        <div class="score-cards"><div><strong id="answers">0</strong><span>Answers</span></div><div><strong id="words">0</strong><span>Words</span></div><div><strong id="score">0</strong><span>Score</span></div></div>
+        <textarea id="answer" class="input" placeholder="Speak using the microphone or type your answer here."></textarea>
+        <div class="captcha"><label for="captcha-answer">Verification: <strong id="captcha-question">Loading&hellip;</strong></label><input id="captcha-answer" class="input" inputmode="numeric" autocomplete="off" placeholder="Answer" /><button id="refresh-captcha" class="btn btn-secondary btn-sm" type="button">New CAPTCHA</button></div>
+        <div class="actions">
+          <button id="mic" type="button" class="btn btn-primary">Start microphone</button>
+          <button id="stop" class="btn btn-secondary" type="button" disabled>Stop microphone</button>
+          <button id="save" class="btn btn-secondary" type="button">Save answer</button>
+          <button id="next" class="btn btn-secondary" type="button">Next question</button>
+        </div>
+        <p class="message" id="feedback" role="status"></p>
+        <div class="tips"><strong>HR tip</strong><p id="tip">Keep your answer structured: introduction, strengths, and an example.</p></div>
+        <div class="feedback-card" id="feedback-card" style="display:none">
+          <div class="feedback-header"><span class="feedback-score" id="feedback-score">70</span><div><strong id="feedback-label">Good answer</strong><p id="feedback-summary">Your answer is solid but could use more detail.</p></div></div>
+          <div class="feedback-breakdown" id="feedback-breakdown"></div>
+          <div class="feedback-resources" id="feedback-resources"></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="particles.js"></script>
+  <script src="ui.js"></script>
+  <script src="api.js"></script>
+  <script src="interview.js"></script>
+</body>
 </html>

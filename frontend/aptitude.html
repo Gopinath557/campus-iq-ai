@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CampusIQ AI aptitude practice tests" />
+  <title>CampusIQ AI | Aptitude Practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span id="brand-avatar"></span>CampusIQ <span>AI</span></a>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="resume.html">Resume</a>
+      <a href="interview.html">HR Practice</a>
+      <a href="aptitude.html" class="active">Aptitude</a>
+    </nav>
+  </header>
+
+  <main class="workspace" id="top">
+    <section class="hero">
+      <p class="eyebrow">Campus placement prep</p>
+      <h1>Aptitude Practice Tests</h1>
+      <p>160+ questions across Quantitative, Logical, Verbal, and CS categories. Timed practice with detailed explanations.</p>
+    </section>
+
+    <section class="apt-cats" id="apt-cats"></section>
+
+    <section class="apt-filters" id="apt-filters" style="display:none">
+      <div class="apt-filter-row">
+        <span class="apt-filter-label">Difficulty:</span>
+        <div class="apt-diff-btns" id="apt-diff-btns">
+          <button class="apt-diff-btn active" data-diff="all" type="button">All</button>
+          <button class="apt-diff-btn" data-diff="easy" type="button">Easy</button>
+          <button class="apt-diff-btn" data-diff="medium" type="button">Medium</button>
+          <button class="apt-diff-btn" data-diff="hard" type="button">Hard</button>
+        </div>
+      </div>
+      <div class="apt-filter-row">
+        <span class="apt-filter-label">Topic:</span>
+        <div class="apt-topic-chips" id="apt-topic-chips"></div>
+      </div>
+      <div class="apt-filter-row">
+        <span class="apt-filter-label"></span>
+        <span class="apt-filter-count" id="apt-filter-count"></span>
+        <button class="btn btn-primary" id="apt-start-btn" type="button">Start Test</button>
+        <button class="btn btn-secondary" id="apt-back-btn" type="button">Back</button>
+      </div>
+    </section>
+
+    <section class="apt-test-area" id="apt-test-area" style="display:none">
+      <div class="proctor-alert" id="proctor-alert" style="display:none">
+        <span class="proctor-alert-icon">&#128737;</span>
+        <span id="proctor-alert-msg">Proctoring active — screen capture is disabled.</span>
+      </div>
+      <div class="apt-topbar">
+        <div class="apt-topbar-left">
+          <span class="apt-cat-badge" id="apt-cat-badge"></span>
+          <span class="apt-q-counter" id="apt-q-counter">1 / 20</span>
+        </div>
+        <div class="apt-topbar-right">
+          <span class="apt-timer" id="apt-timer">00:00</span>
+          <button class="btn btn-secondary" id="apt-quit" type="button">Quit</button>
+        </div>
+      </div>
+      <div class="apt-progress-track"><div class="apt-progress-fill" id="apt-progress-fill"></div></div>
+      <div class="apt-question-card" id="apt-question-card">
+        <p class="apt-q-number" id="apt-q-number">Question 1</p>
+        <div class="apt-q-meta" id="apt-q-meta"></div>
+        <div class="apt-q-timer-bar"><div class="apt-q-timer-fill" id="apt-q-timer-fill"></div></div>
+        <span class="apt-q-countdown" id="apt-q-countdown">30s</span>
+        <h2 class="apt-q-text" id="apt-q-text"></h2>
+        <div class="apt-options" id="apt-options"></div>
+        <p class="message" id="apt-q-feedback" role="status"></p>
+      </div>
+      <div class="apt-explanation" id="apt-explanation" style="display:none">
+        <strong>Explanation:</strong>
+        <p id="apt-explanation-text"></p>
+      </div>
+      <div class="apt-nav">
+        <button class="btn btn-secondary" id="apt-prev" type="button" disabled>Previous</button>
+        <button class="btn btn-primary" id="apt-next" type="button">Next</button>
+        <button class="btn btn-primary" id="apt-submit" type="button" style="display:none">Submit Test</button>
+      </div>
+    </section>
+
+    <section class="apt-results" id="apt-results" style="display:none">
+      <div class="apt-results-card">
+        <div class="apt-results-header">
+          <div class="apt-score-ring"><strong id="apt-final-score">0</strong><span>%</span></div>
+          <div><h2 id="apt-result-title">Test Complete</h2><p id="apt-result-subtitle"></p></div>
+        </div>
+        <div class="apt-result-stats">
+          <div class="apt-stat"><strong id="apt-stat-correct">0</strong><span>Correct</span></div>
+          <div class="apt-stat"><strong id="apt-stat-wrong">0</strong><span>Wrong</span></div>
+          <div class="apt-stat"><strong id="apt-stat-skipped">0</strong><span>Skipped</span></div>
+          <div class="apt-stat"><strong id="apt-stat-time">0:00</strong><span>Time</span></div>
+        </div>
+        <div class="apt-result-actions">
+          <button class="btn btn-primary" id="apt-review-btn" type="button">Review Answers</button>
+          <button class="btn btn-secondary" id="apt-retry-btn" type="button">Try Again</button>
+          <button class="btn btn-secondary" id="apt-home-btn" type="button">Back to Categories</button>
+        </div>
+      </div>
+      <div class="apt-review" id="apt-review" style="display:none"></div>
+    </section>
+
+    <section class="card" id="apt-history-card">
+      <div class="section-heading">
+        <div><p class="eyebrow">Your history</p><h2>Past attempts</h2></div>
+      </div>
+      <div id="apt-history-empty" class="empty-state">
+        <div class="empty-icon">&#128202;</div>
+        <p>Complete a test to see your history here</p>
+      </div>
+      <div id="apt-history-list"></div>
+    </section>
+  </main>
+
+  <script src="ui.js"></script>
+  <script src="aptitude-data.js"></script>
+
+  <!-- Camera Verification (Exam Lock) -->
+  <div class="exam-modal" id="exam-verify" style="display:none">
+    <div class="exam-modal-card">
+      <div class="exam-modal-head">
+        <div class="exam-lock-icon">&#128737;</div>
+        <h3>Student Verification</h3>
+        <p>Please take a photo to start the exam. Your test is monitored.</p>
+      </div>
+      <div class="cam-wrap">
+        <video id="exam-cam" autoplay playsinline muted></video>
+        <canvas id="exam-cam-blur" style="display:none"></canvas>
+        <div class="cam-frame-ring"></div>
+        <div class="cam-status" id="cam-status">Waiting for camera...</div>
+      </div>
+      <div class="exam-modal-actions">
+        <button class="btn btn-primary" id="exam-capture-btn" type="button">Capture Photo</button>
+        <button class="btn btn-secondary" id="cam-skip-btn" type="button">Skip (Guest)</button>
+      </div>
+      <p class="exam-note">&#128273; Photo required for certificate · Blurred background keeps you private</p>
+    </div>
+  </div>
+
+  <!-- Fullscreen Exam Lock Overlay -->
+  <div class="exam-lock-overlay" id="exam-lock" style="display:none">
+    <div class="exam-lock-card">
+      <div class="exam-lock-icon-big">&#128274;</div>
+      <h3>Fullscreen Exam Mode</h3>
+      <p id="exam-lock-msg">Enable fullscreen to start the exam.</p>
+      <button class="btn btn-primary" id="exam-fullscreen-btn" type="button">Enter Fullscreen & Continue</button>
+    </div>
+  </div>
+
+  <!-- Captured Photo Modal -->
+  <div class="exam-modal" id="exam-photo-result" style="display:none">
+    <div class="exam-modal-card">
+      <div class="exam-modal-head">
+        <div class="exam-lock-icon">&#128247;</div>
+        <h3>Photo Captured</h3>
+        <p>Your identity is verified. You can now begin the exam.</p>
+      </div>
+      <img id="exam-photo-img" alt="Your captured photo"/>
+      <div class="exam-modal-actions">
+        <button class="btn btn-primary" id="exam-continue-btn" type="button">Begin Exam</button>
+        <button class="btn btn-secondary" id="exam-retake-btn" type="button">Retake</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="aptitude.js"></script>
+</body>
+</html>

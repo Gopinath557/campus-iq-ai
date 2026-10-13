@@ -1,12 +1,11 @@
-from datetime import date
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class AchievementBase(BaseModel):
-    title: str
-    description: str
-    organization: str
-    achieved_date: date
+    title: str = Field(..., max_length=200)
+    description: str | None = Field(None, max_length=5000)
+    organization: str = Field(..., max_length=200)
+    achievement_date: str | None = Field(None, max_length=50)
     student_id: int
 
 
@@ -15,10 +14,10 @@ class AchievementCreate(AchievementBase):
 
 
 class AchievementUpdate(BaseModel):
-    title: str | None = None
-    description: str | None = None
-    organization: str | None = None
-    achieved_date: date | None = None
+    title: str | None = Field(None, max_length=200)
+    description: str | None = Field(None, max_length=5000)
+    organization: str | None = Field(None, max_length=200)
+    achievement_date: str | None = Field(None, max_length=50)
 
 
 class AchievementResponse(AchievementBase):

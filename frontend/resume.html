@@ -1,4 +1,152 @@
 <!doctype html>
-<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>CampusIQ AI | ATS Resume</title><link rel="stylesheet" href="styles.css" /><style>
-.resume-page{width:min(1050px,calc(100% - 40px));margin:45px auto}.resume-tools{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.ats-note{padding:13px 16px;border-radius:9px;border:1px solid #34517a;background:#10213a;color:#bed0eb;font-size:.87rem}.resume-paper{margin-top:22px;padding:58px 64px;color:#172033;background:#fff;box-shadow:0 20px 60px #0005;font-family:Arial,sans-serif}.resume-paper h1{margin:0;font-size:28px;letter-spacing:.02em}.contact{margin:7px 0 24px;color:#41516a;font-size:13px}.resume-paper h2{margin:22px 0 8px;padding-bottom:5px;border-bottom:1px solid #8995a8;font-size:14px;letter-spacing:.08em}.resume-paper p,.resume-paper li{font-size:13px;line-height:1.5}.resume-paper ul{margin:6px 0;padding-left:18px}.empty{color:#667085;font-style:italic}@media print{body{background:#fff}.topbar,.resume-tools,.ats-note,.hero-copy{display:none}.resume-page{width:auto;margin:0}.resume-paper{margin:0;padding:30px;box-shadow:none}}@media(max-width:600px){.resume-paper{padding:32px 24px}}
-</style></head><body><header class="topbar"><a class="brand" href="index.html">CampusIQ <span>AI</span></a><a class="back" href="index.html">← Dashboard</a></header><main class="resume-page"><p class="eyebrow">ATS-friendly resume</p><h1>Resume Generator</h1><p class="hero-copy">A clean, single-column format designed to be easy for applicant tracking systems to read.</p><div class="ats-note">✓ Standard headings · ✓ No tables or graphics · ✓ Clear keyword sections · ✓ Downloadable plain text</div><div class="resume-tools"><button id="download" type="button">Download ATS TXT</button><button id="print" class="secondary" type="button">Print / Save PDF</button></div><article class="resume-paper" id="resume-paper"><h1 id="name">Your Name</h1><p class="contact" id="contact">Email | Register number | Department</p><h2>PROFESSIONAL SUMMARY</h2><p id="objective" class="empty">Add your objective from the dashboard.</p><h2>EDUCATION</h2><p id="education" class="empty">Add your department and register number from the dashboard.</p><h2>SKILLS</h2><p id="skills" class="empty">Add skills from the dashboard.</p><h2>PROJECTS</h2><ul id="projects"><li class="empty">Add projects from the dashboard.</li></ul><h2>ACHIEVEMENTS</h2><p id="achievement" class="empty">Add an achievement from the dashboard.</p></article></main><script src="resume.js"></script></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusIQ AI | ATS Resume Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">CampusIQ <span>AI</span></a>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="resume.html" class="active">Resume</a>
+      <a href="interview.html">HR Practice</a>
+      <a href="aptitude.html">Aptitude</a>
+    </nav>
+  </header>
+
+  <main class="resume-page">
+    <section class="hero">
+      <p class="eyebrow">ATS Resume Builder</p>
+      <h1>Build Your Resume</h1>
+      <p>Fill each section below. Your resume updates live with an ATS compatibility score.</p>
+    </section>
+
+    <div class="resume-layout">
+      <!-- LEFT: Form -->
+      <div>
+        <div class="tabs" id="tab-bar">
+          <button class="tab-btn active" data-tab="personal">Personal</button>
+          <button class="tab-btn" data-tab="education">Education</button>
+          <button class="tab-btn" data-tab="skills">Skills</button>
+          <button class="tab-btn" data-tab="projects">Projects</button>
+          <button class="tab-btn" data-tab="experience">Experience</button>
+          <button class="tab-btn" data-tab="extras">Extras</button>
+        </div>
+
+        <!-- Personal Info -->
+        <div class="form-panel active card" data-panel="personal">
+          <div class="form-row">
+            <div class="form-group"><label>Full Name *</label><input id="f-name" class="input" placeholder="Gopinath P" /></div>
+            <div class="form-group"><label>Email *</label><input id="f-email" type="email" class="input" placeholder="you@email.com" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Phone *</label><input id="f-phone" class="input" placeholder="+91 98765 43210" /></div>
+            <div class="form-group"><label>Location</label><input id="f-location" class="input" placeholder="Chennai, India" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>LinkedIn URL</label><input id="f-linkedin" class="input" placeholder="linkedin.com/in/yourname" /></div>
+            <div class="form-group"><label>GitHub URL</label><input id="f-github" class="input" placeholder="github.com/yourname" /></div>
+          </div>
+          <div class="form-group"><label>Portfolio / Website</label><input id="f-portfolio" class="input" placeholder="yoursite.com" /></div>
+          <div class="form-group"><label>Professional Summary *</label><textarea id="f-summary" class="input" placeholder="Computer Science student with strong problem-solving skills and experience in building web applications. Seeking a software engineering internship to apply full-stack development skills."></textarea><div class="hint">2-3 sentences. Use keywords from job descriptions.</div></div>
+        </div>
+
+        <!-- Education -->
+        <div class="form-panel" data-panel="education">
+          <div class="card" style="padding:20px">
+            <div id="education-entries"></div>
+            <button class="add-entry" id="add-education" type="button">+ Add Education</button>
+          </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="form-panel" data-panel="skills">
+          <div class="card" style="padding:20px">
+            <div class="form-group"><label>Technical Skills</label>
+              <div class="tag-input-wrap" id="tech-skills-wrap"><input id="tech-skill-input" placeholder="Type a skill and press Enter" /></div>
+              <div class="skill-suggest" id="tech-suggest"></div>
+            </div>
+            <div class="form-group"><label>Tools & Platforms</label>
+              <div class="tag-input-wrap" id="tools-skills-wrap"><input id="tools-skill-input" placeholder="e.g. Git, Docker, AWS" /></div>
+            </div>
+            <div class="form-group"><label>Soft Skills</label>
+              <div class="tag-input-wrap" id="soft-skills-wrap"><input id="soft-skill-input" placeholder="e.g. Leadership, Communication" /></div>
+            </div>
+            <div class="form-group"><label>Languages</label>
+              <div class="tag-input-wrap" id="lang-skills-wrap"><input id="lang-skill-input" placeholder="e.g. English, Tamil, Hindi" /></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="form-panel" data-panel="projects">
+          <div class="card" style="padding:20px">
+            <div id="project-entries"></div>
+            <button class="add-entry" id="add-project" type="button">+ Add Project</button>
+          </div>
+        </div>
+
+        <!-- Experience -->
+        <div class="form-panel" data-panel="experience">
+          <div class="card" style="padding:20px">
+            <div id="experience-entries"></div>
+            <button class="add-entry" id="add-experience" type="button">+ Add Experience / Internship</button>
+          </div>
+        </div>
+
+        <!-- Extras -->
+        <div class="form-panel" data-panel="extras">
+          <div class="card" style="padding:20px">
+            <div class="form-group"><label>Certifications</label>
+              <div class="tag-input-wrap" id="certs-wrap"><input id="cert-input" placeholder="e.g. AWS Cloud Practitioner" /></div>
+            </div>
+            <div class="form-group"><label>Achievements & Awards</label>
+              <div class="tag-input-wrap" id="awards-wrap"><input id="award-input" placeholder="e.g. 1st Place, State Hackathon 2025" /></div>
+            </div>
+            <div class="form-group"><label>Extracurricular Activities</label>
+              <div class="tag-input-wrap" id="activities-wrap"><input id="activity-input" placeholder="e.g. President, college coding club" /></div>
+            </div>
+            <div class="form-group"><label>Volunteer Work</label><textarea id="f-volunteer" class="input" placeholder="Describe any volunteer or community service experience."></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: ATS Score + Preview -->
+      <div>
+        <div class="ats-panel">
+          <div class="ats-score-ring">
+            <svg viewBox="0 0 120 120"><circle class="ring-bg" cx="60" cy="60" r="50"/><circle class="ring-fill" id="ats-ring" cx="60" cy="60" r="50"/></svg>
+            <div class="score-text"><strong id="ats-score">0</strong><small>/ 100</small></div>
+          </div>
+          <div class="ats-sections" id="ats-sections"></div>
+          <div class="ats-keywords"><h4>Keyword Match</h4><div class="kw-list" id="kw-list"></div></div>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-header">
+            <h3>Live Preview</h3>
+            <div class="preview-tools">
+              <button id="btn-txt" type="button">Download .txt</button>
+              <button id="btn-print" class="primary" type="button">Print / PDF</button>
+            </div>
+          </div>
+          <div class="resume-paper" id="resume-paper"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="particles.js"></script>
+  <script src="ui.js"></script>
+  <script src="skills.js"></script>
+  <script src="api.js"></script>
+  <script src="resume.js"></script>
+</body>
+</html>

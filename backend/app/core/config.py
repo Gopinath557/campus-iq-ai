@@ -34,6 +34,7 @@ class Settings(BaseModel):
     db_user: str | None = Field(default=None, validation_alias="DB_USER")
     db_password: str | None = Field(default=None, validation_alias="DB_PASSWORD")
     db_echo: bool = Field(default=False, validation_alias="DB_ECHO")
+    google_client_id: str = Field(default="", validation_alias="GOOGLE_CLIENT_ID")
 
     @property
     def database_url(self) -> str:

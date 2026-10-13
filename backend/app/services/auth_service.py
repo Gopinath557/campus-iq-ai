@@ -60,6 +60,49 @@ class AuthService:
             expires_in=self._access_token_lifetime_seconds,
         )
 
+    def google_login(
+        self, *, google_id: str, email: str, full_name: str
+    ) -> tuple[User, TokenResponse]:
+        """Authenticate or register a user via Google OAuth.
+
+        Returns (user, token_response).
+        """
+        # 1. Check if a user with this Google ID already exists
+        user = self._users.get_by_google_id(google_id)
+
+        if user is not None:
+            if not user.is_active:
+                raise InactiveUserError
+            return user, self._issue_token(user)
+
+        # 2. Check if an email account already exists — link it
+        user = self._users.get_by_email(email)
+        if user is not None:
+            self._users.link_google(user, google_id=google_id)
+            self._session.commit()
+            self._session.refresh(user)
+            return user, self._issue_token(user)
+
+        # 3. Create a brand-new Google account
+        try:
+            user = self._users.create_google(
+                full_name=full_name,
+                email=email,
+                google_id=google_id,
+            )
+            self._session.commit()
+            self._session.refresh(user)
+            return user, self._issue_token(user)
+        except IntegrityError as error:
+            self._session.rollback()
+            raise EmailAlreadyRegisteredError from error
+
+    def _issue_token(self, user: User) -> TokenResponse:
+        return TokenResponse(
+            access_token=create_access_token(str(user.id)),
+            expires_in=self._access_token_lifetime_seconds,
+        )
+
     @property
     def _access_token_lifetime_seconds(self) -> int:
         """Keep the API's explicit expiry response aligned with configuration."""

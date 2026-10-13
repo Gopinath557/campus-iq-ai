@@ -43,3 +43,7 @@ backend/app/uploads/*
 
 # Alembic
 alembic/versions/__pycache__/
+
+# Agent and shortcuts
+.agents/
+*.lnk

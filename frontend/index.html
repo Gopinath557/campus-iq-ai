@@ -1,117 +1,377 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="CampusIQ AI profile workspace" />
-    <title>CampusIQ AI | Profile workspace</title>
-    <link rel="stylesheet" href="styles.css" />
-    <style>.hr-redirect { display: inline-block; margin-top: 8px; padding: 12px 17px; border-radius: 9px; background: #6299f7; color: #07152d; text-decoration: none; font-weight: 780; }.hr-redirect:hover { background: #82b0ff; }</style>
-    <style>
-      .video-stage { position: relative; display: grid; place-items: center; min-height: 205px; overflow: hidden; margin-bottom: 11px; border: 1px solid #405273; border-radius: 12px; background: #0b1322; }
-      .video-stage video { width: 100%; height: 205px; object-fit: cover; }
-      .video-placeholder { position: absolute; inset: 0; display: grid; place-content: center; gap: 5px; text-align: center; color: #b6c3d9; background: radial-gradient(circle, #1e365e, #0b1322); }
-      .video-placeholder span { color: #73a7ff; font-size: 2rem; }.video-placeholder small { color: #93a5c2; font-size: .75rem; }
-      .interviewer-badge { position: absolute; bottom: 10px; left: 10px; display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; background: #07111de8; }.interviewer-badge > span { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: #6399f7; color: #07152d; font-size: .65rem; font-weight: 800; }.interviewer-badge div { display: grid; }.interviewer-badge strong { font-size: .75rem; }.interviewer-badge small { color: #9dafca; font-size: .66rem; }
-      .camera-actions { display: flex; gap: 9px; margin-bottom: 20px; }.camera-actions button { font-size: .82rem; }
-      .hr-dashboard { display: grid; grid-template-columns: 1.15fr .85fr; gap: 12px; margin-bottom: 11px; }.hr-dashboard .video-stage { margin: 0; }.hr-insights { padding: 16px; border: 1px solid #405273; border-radius: 12px; background: linear-gradient(145deg, #1a2b48, #101a2b); }.hr-score { display: grid; grid-template-columns: auto auto; align-items: baseline; column-gap: 5px; margin: 13px 0; }.hr-score strong { font-size: 2.4rem; color: #83b0ff; }.hr-score span { color: #afc2e2; }.hr-score small { grid-column: span 2; color: #91a5c6; font-size: .72rem; }.hr-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }.hr-metrics div { display: grid; gap: 2px; padding: 8px 4px; border-radius: 7px; background: #101d31; text-align: center; }.hr-metrics strong { font-size: 1rem; }.hr-metrics span { color: #9db0ce; font-size: .64rem; }.hr-tip { margin: 14px 0 0; color: #c1d3ef; font-size: .75rem; line-height: 1.4; }
-      .ai-face { animation: glow 2s infinite; }.speaking .ai-face { animation: talk .35s infinite alternate; background: #86b1ff; }@keyframes glow { 50% { box-shadow: 0 0 12px #6399f7; } }@keyframes talk { to { transform: scale(1.18); box-shadow: 0 0 18px #8eb8ff; } }
-      @media(max-width: 600px) { .hr-dashboard { grid-template-columns: 1fr; } }
-    </style>
-  </head>
-  <body>
-    <header class="topbar">
-      <a class="brand" href="#top">CampusIQ <span>AI</span></a>
-      <nav><a href="#dashboard">Dashboard</a><a href="resume.html">Resume</a><a href="interview.html">HR practice</a></nav>
-    </header>
-    <main id="top" class="workspace">
-      <section class="hero">
-        <p class="eyebrow">No login required</p>
-        <h1>Build your student profile.</h1>
-        <p>Your details are saved privately in this browser. You can start right away.</p>
-        <a class="hr-redirect" href="interview.html">Start Virtual HR Interview →</a>
-        <a class="hr-redirect" href="resume.html">Generate ATS-Friendly Resume →</a>
-      </section>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="CampusIQ AI - Intelligent Campus Placement Platform"/>
+<title>CampusIQ AI — Intelligent Placement Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+--bg:#08090d;--bg2:#0e1018;--bg3:#13151f;
+--surface:rgba(255,255,255,.03);--surface2:rgba(255,255,255,.05);--surface3:rgba(255,255,255,.08);
+--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--border3:rgba(255,255,255,.15);
+--text:#f0f2f5;--text2:#8b95a8;--text3:#555e72;--text4:#3a4256;
+--accent:#3b82f6;--accent2:#60a5fa;--accent-glow:rgba(59,130,246,.15);--accent-glow2:rgba(59,130,246,.08);
+--cyan:#06d6a0;--cyan-glow:rgba(6,214,160,.12);
+--gold:#d4a574;--gold2:#c49a6c;
+--red:#ef4444;--green:#22c55e;
+--indigo:#818cf8;
+--silver:#94a3b8;
+--font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+--radius:16px;--radius-sm:10px;--radius-xs:6px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
 
-      <section class="dashboard" id="dashboard" aria-labelledby="dashboard-title">
-        <div><p class="eyebrow">Dashboard</p><h2 id="dashboard-title">Your career readiness</h2></div>
-        <div class="readiness"><div class="progress-ring"><strong id="readiness-score">0</strong><span>%</span></div><div><h3 id="readiness-label">Start your profile</h3><p id="readiness-copy">Add your details to see your readiness score.</p></div></div>
-        <div class="metrics"><div><strong id="metric-skills">0</strong><span>Skills</span></div><div><strong id="metric-projects">0</strong><span>Projects</span></div><div><strong id="metric-answers">0</strong><span>Interview answers</span></div></div>
-      </section>
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;transition:all .4s}
+.nav::before{content:'';position:inset:0;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(8,9,13,.6);border-bottom:1px solid var(--border);opacity:0;transition:opacity .4s}
+.nav.solid::before{opacity:1}
+.nav .container{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1rem;letter-spacing:-.3px}
+.nav-logo .logo-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;color:var(--bg)}
+.nav-menu{display:flex;gap:32px;align-items:center}
+.nav-menu a{font-size:.84rem;font-weight:500;color:var(--text2);transition:color .2s}
+.nav-menu a:hover{color:var(--text)}
+.nav-cta{padding:8px 20px;border-radius:var(--radius-xs);background:var(--text);color:var(--bg);font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}
+.nav-cta:hover{opacity:.85;transform:translateY(-1px)}
+.nav-ham{display:none;background:none;border:none;color:var(--text);font-size:1.3rem;cursor:pointer}
 
-      <section class="grid">
-        <article class="panel profile-panel">
-          <div class="section-heading"><div><p class="eyebrow">Profile</p><h2>Your details</h2></div></div>
-          <form id="profile-form">
-            <label>Full name<input id="full-name" required maxlength="100" placeholder="e.g. Gopinath P" /></label>
-            <label>Email address<input id="email" type="email" required placeholder="you@example.com" /></label>
-            <label>Register number<input id="register-number" required maxlength="20" placeholder="e.g. 22CS001" /></label>
-            <label>Department<input id="department" maxlength="100" placeholder="e.g. Computer Science" /></label>
-            <button type="submit">Save profile</button>
-          </form>
-          <p class="message" id="profile-message" role="status"></p>
-        </article>
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:140px 24px 80px;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.08),transparent 65%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-300px;left:50%;transform:translateX(-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(6,214,160,.05),transparent 65%);pointer-events:none}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:80px 80px;opacity:.5;mask-image:radial-gradient(ellipse 60% 50% at 50% 40%,black,transparent);pointer-events:none}
+.hero-content{position:relative;z-index:2}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 6px 6px 14px;border-radius:100px;background:var(--surface2);border:1px solid var(--border);font-size:.8rem;color:var(--text2);margin-bottom:32px;font-weight:500}
+.hero-pill .pill-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.hero-pill .pill-badge{padding:3px 10px;border-radius:100px;background:var(--accent);color:#fff;font-size:.7rem;font-weight:700}
+.hero h1{font-size:clamp(2.6rem,6vw,4.8rem);font-weight:900;line-height:1.05;letter-spacing:-2.5px;margin-bottom:20px;max-width:800px}
+.hero h1 .line-glow{background:linear-gradient(135deg,var(--accent2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-desc{font-size:clamp(1rem,1.6vw,1.15rem);color:var(--text2);max-width:540px;margin:0 auto 40px;line-height:1.8;font-weight:400}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{padding:13px 28px;border-radius:var(--radius-sm);font-size:.9rem;font-weight:600;border:none;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px;font-family:var(--font);text-decoration:none}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 0 40px rgba(59,130,246,.2)}
+.btn-primary:hover{box-shadow:0 0 60px rgba(59,130,246,.35);transform:translateY(-2px)}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--accent);background:var(--accent-glow2);transform:translateY(-2px)}
 
-        <article class="panel summary-panel">
-          <p class="eyebrow">Your profile</p>
-          <div class="avatar" id="avatar">?</div>
-          <h2 id="summary-name">Add your details</h2>
-          <p id="summary-info">Your profile summary will appear here.</p>
-          <div class="stat-row"><div><strong id="skill-count">0</strong><span>Skills</span></div><div><strong id="project-count">0</strong><span>Projects</span></div></div>
-        </article>
+.hero-flow{position:relative;z-index:2;margin-top:60px;width:100%;max-width:900px;height:360px}
+.hero-flow svg{width:100%;height:100%}
 
-        <article class="panel collection-panel">
-          <div class="section-heading"><div><p class="eyebrow">Skills</p><h2>What you know</h2></div></div>
-          <form class="inline-form" id="skill-form">
-            <input id="skill-input" required maxlength="60" placeholder="e.g. Python" />
-            <button type="submit">Add</button>
-          </form>
-          <ul class="tag-list" id="skill-list"></ul>
-        </article>
+.banner{padding:48px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2)}
+.banner .container{display:flex;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
+.banner-item{display:flex;flex-direction:column;align-items:center;gap:6px}
+.banner-item .b-val{font-size:1.5rem;font-weight:800;letter-spacing:-.5px}
+.banner-item .b-val .glow{color:var(--accent2)}
+.banner-item .b-lbl{font-size:.72rem;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:1.5px}
 
-        <article class="panel collection-panel">
-          <div class="section-heading"><div><p class="eyebrow">Projects</p><h2>What you built</h2></div></div>
-          <form class="project-form" id="project-form">
-            <input id="project-title" required maxlength="100" placeholder="Project title" />
-            <textarea id="project-description" maxlength="300" placeholder="A short description"></textarea>
-            <button type="submit">Add project</button>
-          </form>
-          <ul class="project-list" id="project-list"></ul>
-        </article>
-      </section>
+.sec{padding:120px 0}
+.sec-head{text-align:center;margin-bottom:64px}
+.sec-label{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:3px;margin-bottom:16px}
+.sec-label::before,.sec-label::after{content:'';width:20px;height:1px;background:var(--accent)}
+.sec-title{font-size:clamp(2rem,4vw,2.8rem);font-weight:800;letter-spacing:-1.5px;line-height:1.15}
+.sec-sub{color:var(--text2);font-size:1.05rem;margin-top:12px;max-width:520px;margin-left:auto;margin-right:auto}
 
-      <section class="feature-grid">
-        <article class="panel resume-builder" id="resume">
-          <div class="section-heading"><div><p class="eyebrow">Resume enhancer</p><h2>Make your resume stronger</h2></div></div>
-          <form id="resume-form">
-            <label>Career objective<textarea id="objective" maxlength="450" placeholder="Example: Computer Science student seeking a software engineering internship…"></textarea></label>
-            <label>Key achievement<input id="achievement" maxlength="180" placeholder="Example: Built a student project used by 100 classmates" /></label>
-            <button type="submit">Save resume content</button>
-          </form>
-          <div class="resume-preview"><p class="eyebrow">Resume preview</p><h3 id="resume-name">Your name</h3><p id="resume-contact">Email · Department</p><h4>Objective</h4><p id="resume-objective">Add an objective to begin.</p><h4>Skills</h4><p id="resume-skills">Add skills to your profile.</p><h4>Achievement</h4><p id="resume-achievement">Add one achievement that shows your impact.</p></div>
-          <a class="resume-link" href="resume.html">Open ATS-friendly resume generator →</a>
-        </article>
+.showcase{background:var(--bg2);position:relative}
+.showcase::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--border3),transparent)}
+.showcase-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.showcase-text .showcase-tag{display:inline-block;padding:4px 12px;border-radius:100px;background:var(--accent-glow);color:var(--accent2);font-size:.72rem;font-weight:700;margin-bottom:20px;letter-spacing:.5px}
+.showcase-text h2{font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:16px}
+.showcase-text>p{color:var(--text2);line-height:1.8;font-size:1rem;margin-bottom:28px}
+.ss-features{display:flex;flex-direction:column;gap:14px}
+.ss-feat{display:flex;gap:14px;padding:14px;border-radius:var(--radius-sm);border:1px solid var(--border);transition:all .3s}
+.ss-feat:hover{border-color:var(--accent);background:var(--accent-glow2)}
+.ss-feat-icon{width:36px;height:36px;border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.ss-feat h4{font-size:.88rem;font-weight:700;margin-bottom:2px}
+.ss-feat p{font-size:.8rem;color:var(--text3);margin:0;line-height:1.5}
+.showcase-visual{position:relative}
+.ss-node-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;backdrop-filter:blur(20px);position:relative;overflow:hidden}
+.ss-node-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(59,130,246,.03),rgba(6,214,160,.02));pointer-events:none}
+.ss-node-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.ss-node-dot{width:8px;height:8px;border-radius:50%}
+.ss-node-title{font-size:.72rem;color:var(--text3);font-family:var(--mono);margin-left:auto}
+.ss-nodes{display:flex;flex-direction:column;gap:12px}
+.ss-node{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);transition:all .3s}
+.ss-node:hover{border-color:var(--accent);transform:translateX(4px)}
+.ss-node .n-icon{width:32px;height:32px;border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.ss-node .n-info{flex:1}
+.ss-node .n-name{font-size:.82rem;font-weight:600}
+.ss-node .n-desc{font-size:.72rem;color:var(--text3)}
+.ss-node .n-status{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.ss-connector{width:1px;height:12px;background:var(--border2);margin-left:30px}
 
-        <article class="panel interview" id="interview">
-          <div class="section-heading"><div><p class="eyebrow">Virtual HR interview</p><h2>Practice your answer</h2></div></div>
-          <div class="hr-dashboard">
-          <div class="video-stage">
-            <video id="camera-preview" autoplay muted playsinline></video>
-            <div class="video-placeholder" id="video-placeholder"><span>◉</span><strong>Camera is off</strong><small>Start the camera for face-to-face practice.</small></div>
-            <div class="interviewer-badge" id="ai-character"><span class="ai-face">◉</span><div><strong>CampusIQ HR</strong><small id="ai-status">AI interviewer · Ready</small></div></div>
+.features{position:relative}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.feat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 28px;transition:all .35s;position:relative;overflow:hidden}
+.feat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .35s}
+.feat:hover::before{opacity:1}
+.feat:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.feat-icon{width:44px;height:44px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:20px;border:1px solid var(--border)}
+.feat h3{font-size:1rem;font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
+.feat p{font-size:.85rem;color:var(--text2);line-height:1.7}
+.feat-tag{display:inline-block;margin-top:14px;padding:4px 10px;border-radius:100px;font-size:.68rem;font-weight:600;border:1px solid var(--border);color:var(--text3)}
+
+.how{background:var(--bg2);position:relative}
+.how::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--border3),transparent)}
+.how-flow{display:flex;align-items:flex-start;gap:0;max-width:1000px;margin:0 auto;position:relative}
+.how-step{flex:1;text-align:center;padding:0 20px;position:relative}
+.how-step-num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;margin:0 auto 20px;background:var(--surface);border:1.5px solid var(--border2);position:relative;z-index:2;transition:all .3s}
+.how-step:hover .how-step-num{border-color:var(--accent);box-shadow:0 0 24px var(--accent-glow)}
+.how-step h3{font-size:.95rem;font-weight:700;margin-bottom:6px}
+.how-step p{font-size:.82rem;color:var(--text3);line-height:1.6;max-width:180px;margin:0 auto}
+.how-line{position:absolute;top:24px;left:calc(50% + 32px);right:calc(-50% + 32px);height:1px;background:var(--border2);z-index:1}
+.how-step:last-child .how-line{display:none}
+
+.metrics .container{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.metric{padding:32px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center;transition:all .3s}
+.metric:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.metric .m-val{font-size:2rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,var(--accent2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
+.metric .m-lbl{font-size:.78rem;color:var(--text3);margin-top:6px;font-weight:500}
+
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.testi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all .3s;position:relative}
+.testi:hover{border-color:var(--border2);transform:translateY(-3px)}
+.testi-stars{color:var(--gold);font-size:.8rem;margin-bottom:14px;letter-spacing:2px}
+.testi p{font-size:.88rem;color:var(--text2);line-height:1.7;margin-bottom:20px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:var(--bg);flex-shrink:0}
+.testi-name{font-weight:700;font-size:.84rem}
+.testi-role{font-size:.72rem;color:var(--text3)}
+
+.pricing{background:var(--bg2);position:relative}
+.pricing::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--border3),transparent)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:960px;margin:0 auto}
+.p-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px 28px;transition:all .35s;position:relative;overflow:hidden}
+.p-card.featured{border-color:var(--accent);transform:scale(1.02)}
+.p-card.featured::after{content:'';position:absolute;inset:-1px;border-radius:20px;background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(6,214,160,.08));z-index:-1}
+.p-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.p-card.featured:hover{transform:scale(1.02) translateY(-4px)}
+.p-card .p-badge{position:absolute;top:14px;right:14px;padding:4px 12px;border-radius:100px;background:var(--accent);color:#fff;font-size:.68rem;font-weight:700}
+.p-name{font-size:1rem;font-weight:700;margin-bottom:4px}
+.p-desc{font-size:.8rem;color:var(--text3);margin-bottom:24px}
+.p-val{font-size:2.6rem;font-weight:900;letter-spacing:-1px;margin-bottom:4px;line-height:1}
+.p-val .currency{font-size:1.1rem;font-weight:600;color:var(--text2);vertical-align:top;margin-right:2px}
+.p-period{font-size:.75rem;color:var(--text4);margin-bottom:28px}
+.p-list{list-style:none;margin-bottom:28px}
+.p-list li{padding:9px 0;font-size:.85rem;color:var(--text2);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.p-list li:last-child{border-bottom:none}
+.p-list .ic{color:var(--cyan);font-size:.75rem;font-weight:700}
+.p-btn{width:100%;padding:12px;border-radius:var(--radius-sm);font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s;border:none;font-family:var(--font)}
+.p-btn-fill{background:var(--accent);color:#fff}
+.p-btn-fill:hover{box-shadow:0 0 40px rgba(59,130,246,.3);transform:translateY(-1px)}
+.p-btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2)}
+.p-btn-ghost:hover{border-color:var(--accent);background:var(--accent-glow2)}
+
+.final-cta{position:relative;overflow:hidden;text-align:center}
+.final-cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.06),transparent 70%);pointer-events:none}
+.final-cta h2{font-size:clamp(2rem,5vw,3.2rem);font-weight:900;letter-spacing:-2px;margin-bottom:14px}
+.final-cta h2 .glow{background:linear-gradient(135deg,var(--accent2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.final-cta p{color:var(--text2);font-size:1.05rem;max-width:460px;margin:0 auto 36px}
+
+footer{border-top:1px solid var(--border);background:var(--bg);padding:48px 0 24px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:var(--text3);font-size:.82rem;line-height:1.7;margin-top:12px;max-width:260px}
+.footer-col h5{font-size:.7rem;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px}
+.footer-col a{display:block;font-size:.84rem;color:var(--text3);padding:4px 0;transition:color .2s}
+.footer-col a:hover{color:var(--accent2)}
+.footer-bot{border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;align-items:center}
+.footer-bot p{font-size:.75rem;color:var(--text4)}
+.footer-social{display:flex;gap:10px}
+.footer-social a{width:30px;height:30px;border-radius:var(--radius-xs);background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--text3);transition:all .2s;font-weight:700}
+.footer-social a:hover{border-color:var(--accent);color:var(--accent2);background:var(--accent-glow2)}
+
+.rv{opacity:0;transform:translateY(32px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+.rv.vis{opacity:1;transform:translateY(0)}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}.rv-d4{transition-delay:.32s}
+
+@keyframes flowPulse{0%{stroke-dashoffset:200}100%{stroke-dashoffset:0}}
+.flow-line{stroke-dasharray:8 4;animation:flowPulse 8s linear infinite}
+.flow-node{transition:transform .3s}
+.flow-node:hover{transform:scale(1.06)}
+
+@media(max-width:1024px){.showcase-grid{grid-template-columns:1fr;gap:48px}.features-grid{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:1fr;max-width:380px}.footer-top{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.nav-menu{display:none}.nav-ham{display:block}.hero h1{letter-spacing:-1.5px}.hero-flow{height:240px;margin-top:40px}.features-grid,.testi-grid{grid-template-columns:1fr}.metrics .container{grid-template-columns:repeat(2,1fr)}.how-flow{flex-direction:column;gap:24px}.how-line{display:none}.how-step{text-align:left;display:flex;gap:16px;align-items:flex-start}.how-step-num{margin:0;flex-shrink:0}.footer-top{grid-template-columns:1fr}.footer-bot{flex-direction:column;gap:14px;text-align:center}.banner .container{gap:28px}}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="container">
+    <a class="nav-logo" href="#"><div class="logo-mark">C</div>CampusIQ <span style="color:var(--accent2)">AI</span></a>
+    <div class="nav-menu">
+      <a href="#product">Product</a>
+      <a href="#features">Features</a>
+      <a href="#how">Process</a>
+      <a href="#pricing">Pricing</a>
+      <a class="nav-cta" href="dashboard.html">Open App</a>
+    </div>
+    <button class="nav-ham" onclick="this.previousElementSibling.style.display=this.previousElementSibling.style.display==='flex'?'none':'flex'">☰</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-content">
+    <div class="hero-pill"><span class="pill-dot"></span>Platform v2.0 — Now Available<span class="pill-badge">NEW</span></div>
+    <h1>The AI Platform for<br><span class="line-glow">Campus Placements</span></h1>
+    <p class="hero-desc">Intelligent preparation, real-time feedback, and adaptive learning — everything you need to land your dream job, powered by AI.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="dashboard.html">Start Free Trial →</a>
+      <a class="btn btn-ghost" href="#product">See How It Works</a>
+    </div>
+  </div>
+  <div class="hero-flow">
+    <svg viewBox="0 0 900 360" fill="none">
+      <defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="var(--accent)" stop-opacity=".6"/><stop offset="100%" stop-color="var(--cyan)" stop-opacity=".6"/></linearGradient><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="var(--cyan)" stop-opacity=".4"/><stop offset="100%" stop-color="var(--accent)" stop-opacity=".4"/></linearGradient></defs>
+      <path d="M100 180 Q200 120 300 180" stroke="url(#g1)" stroke-width="1.5" fill="none" opacity=".4" class="flow-line"/>
+      <path d="M300 180 Q400 240 500 180" stroke="url(#g2)" stroke-width="1.5" fill="none" opacity=".4" class="flow-line"/>
+      <path d="M500 180 Q600 100 700 180" stroke="url(#g1)" stroke-width="1.5" fill="none" opacity=".4" class="flow-line"/>
+      <path d="M300 180 Q400 100 500 180" stroke="url(#g2)" stroke-width="1" fill="none" opacity=".2" class="flow-line"/>
+      <path d="M100 180 Q200 260 300 180" stroke="url(#g2)" stroke-width="1" fill="none" opacity=".2" class="flow-line"/>
+      <path d="M500 180 Q600 260 700 180" stroke="url(#g1)" stroke-width="1" fill="none" opacity=".2" class="flow-line"/>
+      <circle r="3" fill="var(--accent2)" opacity=".8"><animateMotion dur="4s" repeatCount="indefinite" path="M100 180 Q200 120 300 180"/></circle>
+      <circle r="3" fill="var(--cyan)" opacity=".8"><animateMotion dur="4s" repeatCount="indefinite" path="M300 180 Q400 240 500 180"/></circle>
+      <circle r="3" fill="var(--accent2)" opacity=".8"><animateMotion dur="4s" repeatCount="indefinite" path="M500 180 Q600 100 700 180"/></circle>
+      <g class="flow-node" transform="translate(60,150)"><rect width="80" height="60" rx="12" fill="var(--bg3)" stroke="var(--border2)" stroke-width="1.5"/><text x="40" y="28" text-anchor="middle" fill="var(--accent2)" font-size="18">👤</text><text x="40" y="46" text-anchor="middle" fill="var(--text2)" font-size="9" font-family="Inter" font-weight="600">Profile</text></g>
+      <g class="flow-node" transform="translate(260,140)"><rect width="90" height="80" rx="14" fill="var(--bg3)" stroke="var(--accent)" stroke-width="1.5"/><circle cx="45" cy="30" r="16" fill="var(--accent-glow)" stroke="var(--accent)" stroke-width="1"/><text x="45" y="35" text-anchor="middle" fill="var(--accent2)" font-size="14">⚡</text><text x="45" y="58" text-anchor="middle" fill="var(--text)" font-size="10" font-family="Inter" font-weight="700">AI Engine</text><text x="45" y="70" text-anchor="middle" fill="var(--text3)" font-size="7.5" font-family="JetBrains Mono">v2.0</text></g>
+      <g class="flow-node" transform="translate(460,150)"><rect width="80" height="60" rx="12" fill="var(--bg3)" stroke="var(--border2)" stroke-width="1.5"/><text x="40" y="28" text-anchor="middle" fill="var(--cyan)" font-size="18">📄</text><text x="40" y="46" text-anchor="middle" fill="var(--text2)" font-size="9" font-family="Inter" font-weight="600">Resume</text></g>
+      <g class="flow-node" transform="translate(460,50)"><rect width="80" height="60" rx="12" fill="var(--bg3)" stroke="var(--border2)" stroke-width="1.5"/><text x="40" y="28" text-anchor="middle" fill="var(--gold)" font-size="18">🎤</text><text x="40" y="46" text-anchor="middle" fill="var(--text2)" font-size="9" font-family="Inter" font-weight="600">Interview</text></g>
+      <g class="flow-node" transform="translate(460,250)"><rect width="80" height="60" rx="12" fill="var(--bg3)" stroke="var(--border2)" stroke-width="1.5"/><text x="40" y="28" text-anchor="middle" fill="var(--accent2)" font-size="18">🧠</text><text x="40" y="46" text-anchor="middle" fill="var(--text2)" font-size="9" font-family="Inter" font-weight="600">Aptitude</text></g>
+      <g class="flow-node" transform="translate(660,150)"><rect width="80" height="60" rx="12" fill="var(--bg3)" stroke="var(--cyan)" stroke-width="1.5"/><text x="40" y="28" text-anchor="middle" fill="var(--cyan)" font-size="18">🏆</text><text x="40" y="46" text-anchor="middle" fill="var(--text2)" font-size="9" font-family="Inter" font-weight="600">Placed!</text></g>
+      <g class="flow-node" transform="translate(660,50)"><rect width="80" height="60" rx="12" fill="var(--bg3)" stroke="var(--border2)" stroke-width="1.5"/><text x="40" y="28" text-anchor="middle" fill="var(--silver)" font-size="18">📊</text><text x="40" y="46" text-anchor="middle" fill="var(--text2)" font-size="9" font-family="Inter" font-weight="600">Analytics</text></g>
+      <g class="flow-node" transform="translate(660,250)"><rect width="80" height="60" rx="12" fill="var(--bg3)" stroke="var(--border2)" stroke-width="1.5"/><text x="40" y="28" text-anchor="middle" fill="var(--text3)" font-size="18">💬</text><text x="40" y="46" text-anchor="middle" fill="var(--text2)" font-size="9" font-family="Inter" font-weight="600">Feedback</text></g>
+    </svg>
+  </div>
+</section>
+
+<section class="banner">
+  <div class="container">
+    <div class="banner-item rv"><div class="b-val">160<span class="glow">+</span></div><div class="b-lbl">Questions</div></div>
+    <div class="banner-item rv rv-d1"><div class="b-val">16</div><div class="b-lbl">HR Roles</div></div>
+    <div class="banner-item rv rv-d2"><div class="b-val">130<span class="glow">+</span></div><div class="b-lbl">Skills</div></div>
+    <div class="banner-item rv rv-d3"><div class="b-val">98<span class="glow">%</span></div><div class="b-lbl">Uptime</div></div>
+    <div class="banner-item rv rv-d4"><div class="b-val">24<span class="glow">/7</span></div><div class="b-lbl">AI Access</div></div>
+  </div>
+</section>
+
+<section class="sec showcase" id="product">
+  <div class="container">
+    <div class="showcase-grid">
+      <div class="showcase-text rv">
+        <div class="showcase-tag">PRODUCT</div>
+        <h2>An AI System That Prepares You for Any Placement</h2>
+        <p>CampusIQ AI is an intelligent career preparation engine. It analyzes your profile, identifies gaps, and creates a personalized preparation path across resumes, interviews, and aptitude.</p>
+        <div class="ss-features">
+          <div class="ss-feat"><div class="ss-feat-icon" style="background:var(--accent-glow);color:var(--accent2)">🎯</div><div><h4>Role-Specific Intelligence</h4><p>16 job roles with tailored questions and evaluation criteria.</p></div></div>
+          <div class="ss-feat"><div class="ss-feat-icon" style="background:var(--cyan-glow);color:var(--cyan)">🔄</div><div><h4>Adaptive Learning Loop</h4><p>System learns from your performance and adjusts difficulty.</p></div></div>
+          <div class="ss-feat"><div class="ss-feat-icon" style="background:rgba(212,165,116,.1);color:var(--gold)">⚡</div><div><h4>Real-Time Analysis</h4><p>Answer feedback, confidence scoring, and keyword detection.</p></div></div>
+        </div>
+      </div>
+      <div class="showcase-visual rv rv-d2">
+        <div class="ss-node-card">
+          <div class="ss-node-header"><div class="ss-node-dot" style="background:var(--accent)"></div><div class="ss-node-dot" style="background:var(--cyan)"></div><div class="ss-node-dot" style="background:var(--gold)"></div><span class="ss-node-title">system-status.json</span></div>
+          <div class="ss-nodes">
+            <div class="ss-node"><div class="n-icon" style="background:var(--accent-glow);color:var(--accent2)">📄</div><div class="n-info"><div class="n-name">Resume Engine</div><div class="n-desc">ATS optimization active</div></div><div class="n-status"></div></div>
+            <div class="ss-connector"></div>
+            <div class="ss-node"><div class="n-icon" style="background:var(--cyan-glow);color:var(--cyan)">🎤</div><div class="n-info"><div class="n-name">Interview AI</div><div class="n-desc">16 roles loaded</div></div><div class="n-status"></div></div>
+            <div class="ss-connector"></div>
+            <div class="ss-node"><div class="n-icon" style="background:rgba(212,165,116,.1);color:var(--gold)">🧠</div><div class="n-info"><div class="n-name">Aptitude Engine</div><div class="n-desc">160+ questions ready</div></div><div class="n-status"></div></div>
+            <div class="ss-connector"></div>
+            <div class="ss-node"><div class="n-icon" style="background:rgba(148,163,184,.1);color:var(--silver)">🛡️</div><div class="n-info"><div class="n-name">Cheat Detection</div><div class="n-desc">14 checks enabled</div></div><div class="n-status"></div></div>
+            <div class="ss-connector"></div>
+            <div class="ss-node"><div class="n-icon" style="background:rgba(99,102,241,.1);color:var(--indigo)">📊</div><div class="n-info"><div class="n-name">Analytics Pipeline</div><div class="n-desc">Processing metrics</div></div><div class="n-status"></div></div>
           </div>
-          <div class="hr-insights"><p class="eyebrow">Interview analytics</p><div class="hr-score"><strong id="hr-score">0</strong><span>/ 100</span><small>Practice score</small></div><div class="hr-metrics"><div><strong id="answer-count">0</strong><span>Answers</span></div><div><strong id="word-count">0</strong><span>Words</span></div><div><strong id="question-count">5</strong><span>Questions</span></div></div><p class="hr-tip" id="hr-tip">Start with a confident introduction.</p></div>
-          </div>
-          <div class="camera-actions"><button id="start-camera" type="button">Start camera</button><button id="stop-camera" class="secondary" type="button" disabled>Stop camera</button><button id="ask-question" class="secondary" type="button">AI ask question</button></div>
-          <p class="question-label">Virtual interviewer asks</p>
-          <h3 id="interview-question">Tell me about yourself.</h3>
-          <textarea id="interview-answer" maxlength="1000" placeholder="Type your answer here. Aim for a clear 60–90 second response."></textarea>
-          <div class="interview-actions"><button id="start-mic" type="button">Start microphone</button><button id="stop-mic" class="secondary" type="button" disabled>Stop microphone</button><button id="save-answer" class="secondary" type="button">Save answer</button><button id="next-question" class="secondary" type="button">Next question</button></div>
-          <p class="message" id="interview-feedback" role="status"></p>
-          <div class="tips"><strong>Quick tip</strong><p>Use the STAR method: Situation, Task, Action, Result.</p></div>
-        </article>
-      </section>
-    </main>
-    <script src="app.js"></script>
-  </body>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec features" id="features">
+  <div class="container">
+    <div class="sec-head rv"><div class="sec-label">Features</div><div class="sec-title">Built for Precision</div><p class="sec-sub">Every feature designed to maximize your placement success rate.</p></div>
+    <div class="features-grid">
+      <div class="feat rv"><div class="feat-icon" style="background:var(--accent-glow2);color:var(--accent2)">📄</div><h3>Smart Resume Builder</h3><p>ATS-optimized templates with AI suggestions. A resume that passes both bots and humans.</p><div class="feat-tag">ATS-Ready</div></div>
+      <div class="feat rv rv-d1"><div class="feat-icon" style="background:var(--cyan-glow);color:var(--cyan)">🎤</div><h3>Virtual HR Interviews</h3><p>Face an AI interviewer that adapts to your role. Real-time answer analysis and scoring.</p><div class="feat-tag">16 Roles</div></div>
+      <div class="feat rv rv-d2"><div class="feat-icon" style="background:rgba(212,165,116,.08);color:var(--gold)">⏱️</div><h3>Timed Aptitude Tests</h3><p>30-second per-question timer, 30-minute overall. Simulates real placement conditions.</p><div class="feat-tag">160+ Qs</div></div>
+      <div class="feat rv"><div class="feat-icon" style="background:rgba(6,214,160,.08);color:var(--cyan)">🛡️</div><h3>Cheat Detection</h3><p>14-point integrity monitoring — tab switches, copy-paste, shortcuts, WPM analysis.</p><div class="feat-tag">14 Checks</div></div>
+      <div class="feat rv rv-d1"><div class="feat-icon" style="background:rgba(99,102,241,.08);color:var(--indigo)">💡</div><h3>AI Answer Feedback</h3><p>Detailed breakdown of structure, confidence, relevance, and keyword coverage.</p><div class="feat-tag">Instant</div></div>
+      <div class="feat rv rv-d2"><div class="feat-icon" style="background:rgba(148,163,184,.08);color:var(--silver)">🔧</div><h3>130+ Skill Catalog</h3><p>Categorized skills with logos, colors, and auto-tagging. Showcase your expertise.</p><div class="feat-tag">Categorized</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec how" id="how">
+  <div class="container">
+    <div class="sec-head rv"><div class="sec-label">Process</div><div class="sec-title">How It Works</div><p class="sec-sub">Four steps from sign-up to placement.</p></div>
+    <div class="how-flow">
+      <div class="how-step rv"><div class="how-line"></div><div class="how-step-num">01</div><div><h3>Create Profile</h3><p>Add skills, education, and goals. AI maps your preparation path.</p></div></div>
+      <div class="how-step rv rv-d1"><div class="how-line"></div><div class="how-step-num">02</div><div><h3>Build Resume</h3><p>Generate an ATS-optimized resume with smart suggestions.</p></div></div>
+      <div class="how-step rv rv-d2"><div class="how-line"></div><div class="how-step-num">03</div><div><h3>Practice</h3><p>Take aptitude tests and practice HR interviews with AI feedback.</p></div></div>
+      <div class="how-step rv rv-d3"><div class="how-step-num">04</div><div><h3>Get Placed</h3><p>Walk in fully prepared. Track confidence over time.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec metrics">
+  <div class="container">
+    <div class="metric rv"><div class="m-val">10K+</div><div class="m-lbl">Students Active</div></div>
+    <div class="metric rv rv-d1"><div class="m-val">87%</div><div class="m-lbl">Score Improvement</div></div>
+    <div class="metric rv rv-d2"><div class="m-val">4.8★</div><div class="m-lbl">Average Rating</div></div>
+    <div class="metric rv rv-d3"><div class="m-val">2.4x</div><div class="m-lbl">Faster Prep</div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container">
+    <div class="sec-head rv"><div class="sec-label">Testimonials</div><div class="sec-title">Trusted by Future Engineers</div></div>
+    <div class="testi-grid">
+      <div class="testi rv"><div class="testi-stars">★★★★★</div><p>"The AI interview simulator asked me the exact questions I got in my TCS interview. Placed on day one."</p><div class="testi-author"><div class="testi-av" style="background:linear-gradient(135deg,var(--accent),var(--cyan))">R</div><div><div class="testi-name">Rahul Sharma</div><div class="testi-role">TCS · ₹7.2 LPA</div></div></div></div>
+      <div class="testi rv rv-d1"><div class="testi-stars">★★★★★</div><p>"The 30-second per-question timer trained me under real pressure. Scored 92% in Infosys written test."</p><div class="testi-author"><div class="testi-av" style="background:linear-gradient(135deg,var(--gold),#e67e22)">P</div><div><div class="testi-name">Priya Menon</div><div class="testi-role">Infosys · ₹6.5 LPA</div></div></div></div>
+      <div class="testi rv rv-d2"><div class="testi-stars">★★★★★</div><p>"Resume builder with 130+ skill catalog looks incredibly professional. Saved me weeks of work."</p><div class="testi-author"><div class="testi-av" style="background:linear-gradient(135deg,var(--cyan),var(--accent))">A</div><div><div class="testi-name">Arjun Kumar</div><div class="testi-role">Wipro · ₹6.8 LPA</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec pricing" id="pricing">
+  <div class="container">
+    <div class="sec-head rv"><div class="sec-label">Pricing</div><div class="sec-title">Simple, Transparent Pricing</div><p class="sec-sub">Start free. Upgrade when you're serious about placement.</p></div>
+    <div class="pricing-grid">
+      <div class="p-card rv"><div class="p-name">Starter</div><div class="p-desc">For exploring the platform</div><div class="p-val">Free</div><div class="p-period">No credit card required</div><ul class="p-list"><li><span class="ic">✓</span> 5 aptitude tests / month</li><li><span class="ic">✓</span> 3 HR practice sessions</li><li><span class="ic">✓</span> Basic resume builder</li><li><span class="ic">✓</span> Skill profile (10 skills)</li></ul><a class="p-btn p-btn-ghost" href="dashboard.html">Get Started</a></div>
+      <div class="p-card featured rv rv-d1"><div class="p-badge">Popular</div><div class="p-name">Pro</div><div class="p-desc">Best for serious candidates</div><div class="p-val"><span class="currency">₹</span>299<span style="font-size:.9rem;font-weight:500;color:var(--text3)">/mo</span></div><div class="p-period">Cancel anytime · 7-day free trial</div><ul class="p-list"><li><span class="ic">✓</span> Unlimited aptitude tests</li><li><span class="ic">✓</span> Unlimited HR practice</li><li><span class="ic">✓</span> ATS-optimized resume</li><li><span class="ic">✓</span> AI answer feedback</li><li><span class="ic">✓</span> Score analytics</li><li><span class="ic">✓</span> All 16 HR roles</li></ul><a class="p-btn p-btn-fill" href="dashboard.html">Start Free Trial →</a></div>
+      <div class="p-card rv rv-d2"><div class="p-name">Campus</div><div class="p-desc">For colleges & training cells</div><div class="p-val">Custom</div><div class="p-period">Volume pricing available</div><ul class="p-list"><li><span class="ic">✓</span> Everything in Pro</li><li><span class="ic">✓</span> Bulk student onboarding</li><li><span class="ic">✓</span> Admin dashboard</li><li><span class="ic">✓</span> Custom question banks</li><li><span class="ic">✓</span> Priority support</li></ul><button class="p-btn p-btn-ghost">Contact Sales</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec final-cta">
+  <div class="container">
+    <h2 class="rv">Start Your Placement<br><span class="glow">Journey Today</span></h2>
+    <p class="rv rv-d1">Join 10,000+ students using AI to prepare smarter and land their dream jobs.</p>
+    <div class="rv rv-d2" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="btn btn-primary" href="dashboard.html">Get Started Free →</a><a class="btn btn-ghost" href="#product">Learn More</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand"><a class="nav-logo" href="#"><div class="logo-mark" style="width:26px;height:26px;font-size:.65rem">C</div>CampusIQ <span style="color:var(--accent2)">AI</span></a><p>The intelligent career preparation platform built for campus placements.</p></div>
+      <div class="footer-col"><h5>Product</h5><a href="resume.html">Resume Builder</a><a href="interview.html">HR Practice</a><a href="aptitude.html">Aptitude Tests</a><a href="dashboard.html">Skill Profile</a></div>
+      <div class="footer-col"><h5>Resources</h5><a href="#">Documentation</a><a href="#">Blog</a><a href="#">Placement Guide</a><a href="#">FAQ</a></div>
+      <div class="footer-col"><h5>Company</h5><a href="#">About</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
+    </div>
+    <div class="footer-bot"><p>&copy; 2026 CampusIQ AI. All rights reserved.</p><div class="footer-social"><a href="#">GH</a><a href="#">X</a><a href="#">in</a></div></div>
+  </div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('solid',window.scrollY>40)});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
 </html>

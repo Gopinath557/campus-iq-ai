@@ -16,6 +16,13 @@ class UserRole(str, Enum):
     ADMIN = "admin"
 
 
+class AuthProvider(str, Enum):
+    """How the user authenticated."""
+
+    EMAIL = "email"
+    GOOGLE = "google"
+
+
 class User(Base):
     """An account that can authenticate with CampusIQ AI."""
 
@@ -24,7 +31,14 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     full_name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(150), unique=True, index=True, nullable=False)
-    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    password_hash: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    auth_provider: Mapped[AuthProvider] = mapped_column(
+        SqlEnum(AuthProvider, values_callable=lambda v: [x.value for x in v]),
+        nullable=False,
+        default=AuthProvider.EMAIL,
+        server_default=AuthProvider.EMAIL.value,
+    )
+    google_id: Mapped[str | None] = mapped_column(String(100), unique=True, nullable=True)
     role: Mapped[UserRole] = mapped_column(
         SqlEnum(UserRole, values_callable=lambda roles: [role.value for role in roles]),
         nullable=False,

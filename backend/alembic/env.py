@@ -6,9 +6,13 @@ from alembic import context
 
 from app.core.config import settings
 from app.database.database import Base
-from app.models.skill import Skill  # noqa: F401 - registers model metadata
-from app.models.student import Student  # noqa: F401 - registers model metadata
-from app.models.user import User  # noqa: F401 - registers model metadata
+from app.models.achievement import Achievement  # noqa: F401
+from app.models.certificate import Certificate  # noqa: F401
+from app.models.experience import Experience  # noqa: F401
+from app.models.project import Project  # noqa: F401
+from app.models.skill import Skill  # noqa: F401
+from app.models.student import Student  # noqa: F401
+from app.models.user import User  # noqa: F401
 
 
 config = context.config

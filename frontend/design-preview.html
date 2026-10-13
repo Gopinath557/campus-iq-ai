@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>CampusIQ AI - Design Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#f8fafc;color:#1e293b}
+.hero-preview{background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a78bfa 100%);color:#fff;padding:80px 40px;text-align:center;position:relative;overflow:hidden}
+.hero-preview::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(255,255,255,.1) 0%,transparent 50%);animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.hero-preview h1{font-size:3rem;font-weight:900;margin-bottom:12px;position:relative}
+.hero-preview p{font-size:1.2rem;opacity:.9;max-width:600px;margin:0 auto 30px;position:relative}
+.hero-preview .badge{display:inline-block;background:rgba(255,255,255,.2);padding:6px 16px;border-radius:20px;font-size:.85rem;font-weight:600;margin-bottom:20px;position:relative;backdrop-filter:blur(10px)}
+.hero-btns{display:flex;gap:12px;justify-content:center;position:relative}
+.hero-btns .btn{padding:12px 28px;border-radius:10px;font-weight:600;font-size:.95rem;border:none;cursor:pointer;transition:all .2s}
+.hero-btns .btn-primary{background:#fff;color:#6366f1}
+.hero-btns .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,.2)}
+.hero-btns .btn-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.4)}
+.hero-btns .btn-outline:hover{background:rgba(255,255,255,.1)}
+
+.section{padding:60px 40px;max-width:1100px;margin:0 auto}
+.section-title{text-align:center;margin-bottom:40px}
+.section-title .eyebrow{color:#6366f1;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.section-title h2{font-size:2rem;font-weight:800}
+.section-title p{color:#64748b;margin-top:8px}
+
+/* Stats Row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:-40px;position:relative;z-index:1;padding:0 40px;max-width:1100px;margin-left:auto;margin-right:auto}
+.stat-card{background:#fff;border-radius:16px;padding:24px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.08);border:1px solid #e2e8f0}
+.stat-card .stat-icon{width:48px;height:48px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:10px}
+.stat-card .stat-num{font-size:1.8rem;font-weight:800;color:#1e293b}
+.stat-card .stat-label{font-size:.8rem;color:#64748b;font-weight:500}
+
+/* Feature Cards */
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.feature-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:32px;transition:all .3s;position:relative;overflow:hidden}
+.feature-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.1);border-color:#6366f1}
+.feature-card::after{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--accent);transform:scaleX(0);transition:transform .3s}
+.feature-card:hover::after{transform:scaleX(1)}
+.feature-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:16px}
+.feature-card h3{font-size:1.1rem;font-weight:700;margin-bottom:8px}
+.feature-card p{color:#64748b;font-size:.9rem;line-height:1.6}
+.feature-card .feature-link{display:inline-flex;align-items:center;gap:6px;color:#6366f1;font-weight:600;font-size:.85rem;margin-top:16px;text-decoration:none}
+.feature-card .feature-link:hover{gap:10px}
+
+/* Aptitude Preview */
+.apt-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.apt-mini{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:24px 16px;text-align:center;transition:all .3s;cursor:pointer}
+.apt-mini:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.08);border-color:var(--c)}
+.apt-mini .apt-emoji{font-size:2rem;margin-bottom:10px}
+.apt-mini h4{font-size:.9rem;font-weight:700;margin-bottom:4px}
+.apt-mini p{font-size:.78rem;color:#64748b}
+.apt-mini .apt-count{display:inline-block;margin-top:10px;padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:600;color:#fff;background:var(--c)}
+
+/* Dark Mode Preview */
+.dark-section{background:#0f172a;color:#e2e8f0;padding:60px 40px}
+.dark-section .section-title h2{color:#fff}
+.dark-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto}
+.dark-card{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:28px;transition:all .3s}
+.dark-card:hover{border-color:#6366f1;box-shadow:0 0 30px rgba(99,102,241,.15)}
+.dark-card .dc-icon{font-size:1.8rem;margin-bottom:12px}
+.dark-card h4{font-size:1rem;font-weight:700;margin-bottom:6px;color:#f1f5f9}
+.dark-card p{font-size:.85rem;color:#94a3b8;line-height:1.5}
+
+/* Testimonial */
+.testimonial-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:24px;position:relative}
+.testi-card::before{content:'\201C';position:absolute;top:12px;left:20px;font-size:3rem;color:#6366f120;font-family:serif}
+.testi-card p{font-size:.9rem;color:#475569;line-height:1.6;margin-bottom:16px;font-style:italic}
+.testi-card .testi-author{display:flex;align-items:center;gap:10px}
+.testi-card .testi-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#a78bfa);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8rem}
+.testi-card .testi-name{font-weight:600;font-size:.85rem}
+.testi-card .testi-role{font-size:.75rem;color:#94a3b8}
+.testi-stars{color:#f59e0b;font-size:.8rem;margin-bottom:10px}
+
+/* Footer */
+.footer{background:#1e293b;color:#94a3b8;padding:40px;text-align:center;font-size:.85rem}
+.footer a{color:#a78bfa;text-decoration:none}
+
+/* Responsive */
+@media(max-width:768px){
+  .hero-preview h1{font-size:2rem}
+  .stats-row{grid-template-columns:repeat(2,1fr);padding:0 20px}
+  .features-grid,.apt-preview,.dark-cards,.testimonial-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero-preview">
+  <div class="badge">🚀 AI-Powered Career Platform</div>
+  <h1>CampusIQ AI</h1>
+  <p>Your all-in-one platform for placement preparation. Build your profile, practice interviews, and ace aptitude tests.</p>
+  <div class="hero-btns">
+    <button class="btn btn-primary">Get Started Free</button>
+    <button class="btn btn-outline">Watch Demo</button>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-icon" style="background:#6366f110;color:#6366f1">📊</div>
+    <div class="stat-num">160+</div>
+    <div class="stat-label">Aptitude Questions</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:#10b98110;color:#10b981">🎯</div>
+    <div class="stat-num">16</div>
+    <div class="stat-label">HR Roles Covered</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:#f59e0b10;color:#f59e0b">📄</div>
+    <div class="stat-num">130+</div>
+    <div class="stat-label">Skills Catalog</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:#ef444410;color:#ef4444">🏆</div>
+    <div class="stat-num">24/7</div>
+    <div class="stat-label">AI Practice</div>
+  </div>
+</div>
+
+<!-- Features -->
+<div class="section">
+  <div class="section-title">
+    <div class="eyebrow">Features</div>
+    <h2>Everything You Need to Land Your Dream Job</h2>
+    <p>One platform, complete placement preparation</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card" style="--accent:#6366f1">
+      <div class="feature-icon" style="background:#6366f110;color:#6366f1">📝</div>
+      <h3>Smart Resume Builder</h3>
+      <p>Build a professional resume with AI-powered suggestions. ATS-friendly templates that recruiters love.</p>
+      <a class="feature-link" href="#">Build Resume →</a>
+    </div>
+    <div class="feature-card" style="--accent:#8b5cf6">
+      <div class="feature-icon" style="background:#8b5cf610;color:#8b5cf6">🎤</div>
+      <h3>Virtual HR Interview</h3>
+      <p>Practice with an AI interviewer. Real-time feedback, 16 job roles, answer analysis with scoring.</p>
+      <a class="feature-link" href="#">Start Practice →</a>
+    </div>
+    <div class="feature-card" style="--accent:#06b6d4">
+      <div class="feature-icon" style="background:#06b6d410;color:#06b6d4">🧠</div>
+      <h3>Aptitude Tests</h3>
+      <p>160+ questions across Quant, Logical, Verbal, and CS. Timed tests with detailed explanations.</p>
+      <a class="feature-link" href="#">Take a Test →</a>
+    </div>
+    <div class="feature-card" style="--accent:#10b981">
+      <div class="feature-icon" style="background:#10b98110;color:#10b981">🛠️</div>
+      <h3>Skill Profile</h3>
+      <p>Showcase 130+ skills with auto-logos, color coding, and category organization.</p>
+      <a class="feature-link" href="#">Add Skills →</a>
+    </div>
+  </div>
+</div>
+
+<!-- Aptitude Preview -->
+<div class="section" style="background:#f1f5f9">
+  <div class="section-title">
+    <div class="eyebrow">Aptitude Practice</div>
+    <h2>Choose Your Category</h2>
+  </div>
+  <div class="apt-preview" style="max-width:1100px;margin:0 auto">
+    <div class="apt-mini" style="--c:#6366f1">
+      <div class="apt-emoji">📈</div>
+      <h4>Quantitative</h4>
+      <p>Math, percentages, profit & loss</p>
+      <div class="apt-count">41 Questions</div>
+    </div>
+    <div class="apt-mini" style="--c:#8b5cf6">
+      <div class="apt-emoji">🧩</div>
+      <h4>Logical</h4>
+      <p>Puzzles, series, coding</p>
+      <div class="apt-count">40 Questions</div>
+    </div>
+    <div class="apt-mini" style="--c:#06b6d4">
+      <div class="apt-emoji">📖</div>
+      <h4>Verbal</h4>
+      <p>Grammar, vocabulary, idioms</p>
+      <div class="apt-count">40 Questions</div>
+    </div>
+    <div class="apt-mini" style="--c:#10b981">
+      <div class="apt-emoji">💻</div>
+      <h4>CS & Programming</h4>
+      <p>DS, algorithms, OOP, SQL</p>
+      <div class="apt-count">40 Questions</div>
+    </div>
+  </div>
+</div>
+
+<!-- Dark Mode Concept -->
+<div class="dark-section">
+  <div class="section-title">
+    <div class="eyebrow" style="color:#a78bfa">Also Available</div>
+    <h2>Dark Mode Ready</h2>
+  </div>
+  <div class="dark-cards">
+    <div class="dark-card">
+      <div class="dc-icon">🌙</div>
+      <h4>Easy on the Eyes</h4>
+      <p>Full dark theme for late-night study sessions. Comfortable for extended use.</p>
+    </div>
+    <div class="dark-card">
+      <div class="dc-icon">⚡</div>
+      <h4>Blazing Fast</h4>
+      <p>No frameworks, pure vanilla JS. Loads in under a second on any device.</p>
+    </div>
+    <div class="dark-card">
+      <div class="dc-icon">🔒</div>
+      <h4>Secure by Default</h4>
+      <p>JWT auth, rate limiting, CSP headers, input validation — production-ready.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonials -->
+<div class="section">
+  <div class="section-title">
+    <div class="eyebrow">Testimonials</div>
+    <h2>Trusted by Students</h2>
+  </div>
+  <div class="testimonial-row">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p>"The HR interview practice helped me prepare for my TCS interview. Got placed!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">R</div>
+        <div><div class="testi-name">Rahul S.</div><div class="testi-role">Placed at TCS</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p>"The aptitude tests with timer and explanations are exactly what I needed for placement prep."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">P</div>
+        <div><div class="testi-name">Priya M.</div><div class="testi-role">Placed at Infosys</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★☆</div>
+      <p>"Resume builder saved me hours. The skill catalog with logos looks so professional."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">A</div>
+        <div><div class="testi-name">Arjun K.</div><div class="testi-role">Placed at Wipro</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>CampusIQ AI &copy; 2026 &middot; Built for campus placements &middot; <a href="#">GitHub</a></p>
+</div>
+
+</body>
+</html>

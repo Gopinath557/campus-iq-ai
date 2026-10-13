@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>CampusIQ AI — Placement Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#06090f;--bg2:#0c1220;--bg3:#111a2e;
+  --surface:#141e33;--surface2:#1a2744;
+  --border:#1e2d4a;--border2:#253654;
+  --text:#e8edf5;--text2:#8899b4;--text3:#5a6d8a;
+  --cyan:#00e5ff;--cyan2:#00bcd4;--cyan-glow:rgba(0,229,255,.15);
+  --gold:#ffb74d;--gold2:#ffa726;--gold-glow:rgba(255,183,77,.12);
+  --indigo:#6366f1;--indigo2:#818cf8;
+  --red:#ff5252;--green:#00e676;
+  --grad1:linear-gradient(135deg,#00e5ff 0%,#6366f1 50%,#a78bfa 100%);
+  --grad2:linear-gradient(135deg,#0c1220 0%,#111a2e 100%);
+  --font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ═══════════ NAV ═══════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 0;transition:all .3s;backdrop-filter:blur(20px);background:rgba(6,9,15,.7);border-bottom:1px solid transparent}
+nav.scrolled{border-bottom-color:var(--border);background:rgba(6,9,15,.92)}
+nav .container{display:flex;align-items:center;justify-content:space-between}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;letter-spacing:-.3px}
+.nav-brand .brand-mark{width:32px;height:32px;border-radius:10px;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:900;color:#06090f}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:.88rem;font-weight:500;color:var(--text2);transition:color .2s;position:relative}
+.nav-links a:hover{color:var(--text)}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--cyan);transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:8px 20px;border-radius:8px;background:var(--text);color:var(--bg);font-size:.85rem;font-weight:600;transition:all .2s;border:none;cursor:pointer}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(232,237,245,.2)}
+.nav-mobile{display:none;background:none;border:none;color:var(--text);font-size:1.4rem;cursor:pointer}
+
+/* ═══════════ HERO ═══════════ */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:120px 0 80px}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.4;animation:orbFloat 8s ease-in-out infinite}
+.hero-orb-1{width:500px;height:500px;background:radial-gradient(circle,rgba(0,229,255,.3),transparent 70%);top:-10%;right:-5%;animation-delay:0s}
+.hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,.25),transparent 70%);bottom:0;left:-8%;animation-delay:3s}
+.hero-orb-3{width:300px;height:300px;background:radial-gradient(circle,rgba(255,183,77,.15),transparent 70%);top:40%;left:50%;animation-delay:5s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,15px) scale(.95)}}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.15;mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%)}
+.hero .container{position:relative;z-index:1;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px 6px 8px;border-radius:40px;background:var(--surface);border:1px solid var(--border);font-size:.82rem;font-weight:500;color:var(--text2);margin-bottom:28px;animation:fadeUp .8s ease-out}
+.hero-badge .badge-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero h1{font-size:clamp(2.8rem,6.5vw,5rem);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:20px;animation:fadeUp .8s ease-out .1s both}
+.hero h1 .grad{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .hero-sub{font-size:clamp(1rem,1.8vw,1.25rem);color:var(--text2);max-width:620px;margin:0 auto 40px;line-height:1.7;animation:fadeUp .8s ease-out .2s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.hero-actions{display:flex;gap:14px;justify-content:center;animation:fadeUp .8s ease-out .3s both}
+.btn-hero{padding:14px 32px;border-radius:12px;font-size:1rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+.btn-hero-primary{background:var(--cyan);color:var(--bg);box-shadow:0 0 30px rgba(0,229,255,.25)}
+.btn-hero-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,229,255,.4)}
+.btn-hero-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-hero-secondary:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.hero-metrics{display:flex;gap:48px;justify-content:center;margin-top:60px;animation:fadeUp .8s ease-out .4s both}
+.hero-metric{text-align:center}
+.hero-metric .num{font-size:1.6rem;font-weight:800;color:var(--text)}
+.hero-metric .num .cyan{color:var(--cyan)}
+.hero-metric .label{font-size:.78rem;color:var(--text3);font-weight:500;margin-top:2px}
+.hero-visual{margin-top:60px;position:relative;animation:fadeUp .8s ease-out .5s both}
+.hero-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:800px;margin:0 auto;position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+.hero-card-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.hero-card-dots{display:flex;gap:6px}
+.hero-card-dots span{width:10px;height:10px;border-radius:50%}
+.hero-card-dots span:nth-child(1){background:#ff5f57}
+.hero-card-dots span:nth-child(2){background:#febc2e}
+.hero-card-dots span:nth-child(3){background:#28c840}
+.hero-card-title{font-size:.78rem;color:var(--text3);font-family:var(--mono)}
+.hero-card-content{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.hero-card-stat{background:var(--bg2);border-radius:12px;padding:16px;text-align:center;border:1px solid var(--border)}
+.hero-card-stat .stat-val{font-size:1.4rem;font-weight:800;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-card-stat .stat-lbl{font-size:.72rem;color:var(--text3);margin-top:4px}
+.hero-card-bar{margin-top:16px;background:var(--bg2);border-radius:8px;height:6px;overflow:hidden}
+.hero-card-bar-fill{height:100%;border-radius:8px;background:var(--grad1);animation:barGrow 2s ease-out 1s both;width:0}
+@keyframes barGrow{to{width:87%}}
+
+/* ═══════════ TRUSTED BY ═══════════ */
+.trusted{padding:60px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg)}
+.trusted .container{text-align:center}
+.trusted p{font-size:.78rem;color:var(--text3);text-transform:uppercase;letter-spacing:3px;font-weight:600;margin-bottom:28px}
+.trusted-logos{display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap;opacity:.4}
+.trusted-logos span{font-size:1.1rem;font-weight:700;color:var(--text2);letter-spacing:1px}
+
+/* ═══════════ WHAT WE DO ═══════════ */
+.showcase{padding:120px 0;position:relative}
+.showcase .container{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.showcase-label{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}
+.showcase-label::before{content:'';width:20px;height:2px;background:var(--cyan)}
+.showcase h2{font-size:clamp(2rem,4vw,2.8rem);font-weight:800;line-height:1.15;letter-spacing:-1px;margin-bottom:20px}
+.showcase p{color:var(--text2);font-size:1.05rem;line-height:1.8;margin-bottom:20px}
+.showcase-features{display:flex;flex-direction:column;gap:16px;margin-top:28px}
+.showcase-feat{display:flex;align-items:flex-start;gap:14px;padding:16px;border-radius:12px;border:1px solid var(--border);transition:all .3s}
+.showcase-feat:hover{border-color:var(--cyan);background:rgba(0,229,255,.03)}
+.showcase-feat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.showcase-feat h4{font-size:.92rem;font-weight:700;margin-bottom:2px}
+.showcase-feat p{font-size:.82rem;color:var(--text3);margin:0;line-height:1.5}
+.showcase-visual{position:relative}
+.showcase-mock{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative}
+.showcase-mock::after{content:'';position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 0 60px rgba(0,229,255,.05);pointer-events:none}
+.mock-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.mock-header span{width:8px;height:8px;border-radius:50%}
+.mock-header span:nth-child(1){background:#ff5f57}
+.mock-header span:nth-child(2){background:#febc2e}
+.mock-header span:nth-child(3){background:#28c840}
+.mock-header .mock-title{margin-left:auto;font-size:.72rem;color:var(--text3);font-family:var(--mono)}
+.mock-body{padding:24px}
+.mock-chat{display:flex;flex-direction:column;gap:12px}
+.mock-msg{max-width:80%;padding:12px 16px;border-radius:14px;font-size:.85rem;line-height:1.5}
+.mock-msg.ai{background:var(--bg2);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
+.mock-msg.user{background:var(--indigo);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.mock-typing{display:flex;gap:4px;align-self:flex-start;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;border-bottom-left-radius:4px}
+.mock-typing span{width:6px;height:6px;border-radius:50%;background:var(--text3);animation:typeBounce .6s ease-in-out infinite}
+.mock-typing span:nth-child(2){animation-delay:.1s}
+.mock-typing span:nth-child(3){animation-delay:.2s}
+@keyframes typeBounce{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-6px);opacity:1}}
+
+/* ═══════════ FEATURES ═══════════ */
+.features{padding:120px 0;background:var(--bg2);position:relative}
+.features::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.features .section-header{text-align:center;margin-bottom:60px}
+.section-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}
+.section-eyebrow::before,.section-eyebrow::after{content:'';width:16px;height:1.5px;background:var(--cyan)}
+.features h2{font-size:clamp(2rem,4vw,2.8rem);font-weight:800;letter-spacing:-1px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 28px;transition:all .3s;position:relative;overflow:hidden}
+.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad1);transform:scaleX(0);transition:transform .4s;transform-origin:left}
+.feat-card:hover::before{transform:scaleX(1)}
+.feat-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.feat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:18px}
+.feat-card h3{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.feat-card p{font-size:.88rem;color:var(--text2);line-height:1.7}
+.feat-card .feat-tag{display:inline-block;margin-top:14px;padding:4px 10px;border-radius:6px;font-size:.72rem;font-weight:600;background:rgba(0,229,255,.08);color:var(--cyan)}
+
+/* ═══════════ HOW IT WORKS ═══════════ */
+.how{padding:120px 0;position:relative}
+.how .section-header{text-align:center;margin-bottom:70px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative}
+.steps::before{content:'';position:absolute;top:40px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--cyan),var(--indigo),var(--gold),var(--cyan));opacity:.3}
+.step{text-align:center;position:relative}
+.step-num{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;margin:0 auto 20px;position:relative;z-index:1;border:2px solid var(--border);background:var(--bg);transition:all .3s}
+.step:hover .step-num{border-color:var(--cyan);box-shadow:0 0 30px rgba(0,229,255,.2)}
+.step h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+.step p{font-size:.85rem;color:var(--text3);line-height:1.6;max-width:200px;margin:0 auto}
+
+/* ═══════════ METRICS ═══════════ */
+.metrics{padding:100px 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.metrics .container{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.metric{text-align:center;padding:32px 16px;background:var(--surface);border:1px solid var(--border);border-radius:16px;transition:all .3s}
+.metric:hover{border-color:var(--cyan);transform:translateY(-4px)}
+.metric .metric-val{font-size:2.4rem;font-weight:900;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2}
+.metric .metric-label{font-size:.82rem;color:var(--text3);margin-top:6px;font-weight:500}
+
+/* ═══════════ TESTIMONIALS ═══════════ */
+.testimonials{padding:120px 0}
+.testimonials .section-header{text-align:center;margin-bottom:60px}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .3s;position:relative}
+.testi:hover{border-color:var(--border2);transform:translateY(-4px)}
+.testi::before{content:'"';position:absolute;top:16px;right:24px;font-size:4rem;font-weight:900;line-height:1;background:linear-gradient(135deg,rgba(0,229,255,.15),rgba(99,102,241,.1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.testi-stars{color:var(--gold);font-size:.85rem;margin-bottom:12px;letter-spacing:2px}
+.testi p{font-size:.9rem;color:var(--text2);line-height:1.7;margin-bottom:20px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:var(--bg)}
+.testi-name{font-weight:700;font-size:.88rem}
+.testi-role{font-size:.75rem;color:var(--text3)}
+
+/* ═══════════ PRICING ═══════════ */
+.pricing{padding:120px 0;background:var(--bg2)}
+.pricing .section-header{text-align:center;margin-bottom:60px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto}
+.price-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px 28px;transition:all .3s;position:relative}
+.price-card.featured{border-color:var(--cyan);transform:scale(1.03)}
+.price-card.featured::before{content:'Most Popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:4px 16px;border-radius:20px;background:var(--grad1);color:var(--bg);font-size:.72rem;font-weight:700;white-space:nowrap}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.price-card.featured:hover{transform:scale(1.03) translateY(-4px)}
+.price-name{font-size:1rem;font-weight:700;margin-bottom:4px}
+.price-desc{font-size:.82rem;color:var(--text3);margin-bottom:20px}
+.price-val{font-size:2.4rem;font-weight:900;margin-bottom:4px}
+.price-val .curr{font-size:1rem;font-weight:600;color:var(--text2)}
+.price-period{font-size:.78rem;color:var(--text3);margin-bottom:24px}
+.price-features{list-style:none;margin-bottom:28px}
+.price-features li{padding:8px 0;font-size:.88rem;color:var(--text2);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.price-features li:last-child{border-bottom:none}
+.price-features .check{color:var(--green);font-weight:700}
+.price-btn{width:100%;padding:12px;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;border:none}
+.price-btn-primary{background:var(--cyan);color:var(--bg)}
+.price-btn-primary:hover{box-shadow:0 0 30px rgba(0,229,255,.3)}
+.price-btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+.price-btn-outline:hover{border-color:var(--cyan)}
+
+/* ═══════════ FINAL CTA ═══════════ */
+.final-cta{padding:120px 0;text-align:center;position:relative;overflow:hidden}
+.final-cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,.1),transparent 70%);pointer-events:none}
+.final-cta h2{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:900;letter-spacing:-1.5px;margin-bottom:16px}
+.final-cta p{color:var(--text2);font-size:1.1rem;max-width:500px;margin:0 auto 36px}
+.final-cta .btn-hero{font-size:1.05rem;padding:16px 40px}
+
+/* ═══════════ FOOTER ═══════════ */
+footer{border-top:1px solid var(--border);padding:60px 0 30px;background:var(--bg)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{color:var(--text3);font-size:.85rem;line-height:1.7;margin-top:12px;max-width:280px}
+.footer-col h4{font-size:.78rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+.footer-col a{display:block;font-size:.88rem;color:var(--text2);padding:4px 0;transition:color .2s}
+.footer-col a:hover{color:var(--cyan)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-size:.78rem;color:var(--text3)}
+.footer-bottom .social{display:flex;gap:12px}
+.footer-bottom .social a{width:32px;height:32px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--text3);transition:all .2s}
+.footer-bottom .social a:hover{background:var(--cyan);color:var(--bg)}
+
+/* ═══════════ ANIMATIONS ═══════════ */
+.reveal{opacity:0;transform:translateY(40px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media(max-width:1024px){
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr);gap:32px}
+  .steps::before{display:none}
+  .showcase .container{grid-template-columns:1fr;gap:40px}
+  .pricing-grid{grid-template-columns:1fr;max-width:400px}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-mobile{display:block}
+  .hero h1{letter-spacing:-1px}
+  .hero-metrics{gap:24px}
+  .hero-card-content{grid-template-columns:1fr}
+  .features-grid,.testi-grid{grid-template-columns:1fr}
+  .metrics .container{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:16px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav id="nav">
+  <div class="container">
+    <a class="nav-brand" href="#">
+      <div class="brand-mark">C</div>
+      CampusIQ <span style="color:var(--cyan)">AI</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#testimonials">Reviews</a>
+      <button class="nav-cta">Get Started</button>
+    </div>
+    <button class="nav-mobile" onclick="document.querySelector('.nav-links').style.display=document.querySelector('.nav-links').style.display==='flex'?'none':'flex'">☰</button>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <div class="hero-badge"><span class="badge-dot"></span>AI-Powered Career Platform — Now Live</div>
+    <h1>Ace Your Campus<br>Placements with <span class="grad">AI Intelligence</span></h1>
+    <p class="hero-sub">From resume building to virtual HR interviews and aptitude practice — one intelligent platform that adapts to your goals and gets you placed.</p>
+    <div class="hero-actions">
+      <button class="btn-hero btn-hero-primary">Start Free →</button>
+      <button class="btn-hero btn-hero-secondary">See How It Works</button>
+    </div>
+    <div class="hero-metrics">
+      <div class="hero-metric"><div class="num">160<span class="cyan">+</span></div><div class="label">Aptitude Questions</div></div>
+      <div class="hero-metric"><div class="num">16</div><div class="label">HR Role Profiles</div></div>
+      <div class="hero-metric"><div class="num">130<span class="cyan">+</span></div><div class="label">Skills Tracked</div></div>
+      <div class="hero-metric"><div class="num">24<span class="cyan">/7</span></div><div class="label">AI Availability</div></div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="hero-card-dots"><span></span><span></span><span></span></div>
+          <div class="hero-card-title">campusiq-ai / dashboard</div>
+        </div>
+        <div class="hero-card-content">
+          <div class="hero-card-stat"><div class="stat-val">87%</div><div class="stat-lbl">Aptitude Score</div></div>
+          <div class="hero-card-stat"><div class="stat-val">92%</div><div class="stat-lbl">Interview Rating</div></div>
+          <div class="hero-card-stat"><div class="stat-val">4.8</div><div class="stat-lbl">Profile Strength</div></div>
+        </div>
+        <div class="hero-card-bar"><div class="hero-card-bar-fill"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TRUSTED BY ═══════════ -->
+<section class="trusted">
+  <div class="container">
+    <p>Trusted by students from top institutions</p>
+    <div class="trusted-logos">
+      <span>IIT Delhi</span><span>NIT Trichy</span><span>VIT Vellore</span><span>SRM</span><span>IIIT Hyderabad</span><span>Bits Pilani</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ WHAT WE DO ═══════════ -->
+<section class="showcase">
+  <div class="container">
+    <div class="reveal">
+      <div class="showcase-label">What We Do</div>
+      <h2>Your AI Career<br>Coach, Always Ready</h2>
+      <p>CampusIQ AI combines intelligent resume building, realistic HR interview simulation, and comprehensive aptitude training — all personalized to your target role and skill level.</p>
+      <div class="showcase-features">
+        <div class="showcase-feat">
+          <div class="showcase-feat-icon" style="background:var(--cyan-glow);color:var(--cyan)">📄</div>
+          <div><h4>ATS-Optimized Resume Builder</h4><p>Generate professional resumes that pass Applicant Tracking Systems. Smart suggestions based on your skills and experience.</p></div>
+        </div>
+        <div class="showcase-feat">
+          <div class="showcase-feat-icon" style="background:rgba(99,102,241,.12);color:var(--indigo)">🎤</div>
+          <div><h4>Virtual HR Interview Practice</h4><p>Face an AI interviewer that adapts to your role. Real-time answer analysis, confidence scoring, and detailed feedback.</p></div>
+        </div>
+        <div class="showcase-feat">
+          <div class="showcase-feat-icon" style="background:var(--gold-glow);color:var(--gold)">🧠</div>
+          <div><h4>Smart Aptitude Engine</h4><p>160+ questions across 4 categories with topic filtering, difficulty levels, timed tests, and detailed explanations.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="showcase-visual reveal reveal-delay-2">
+      <div class="showcase-mock">
+        <div class="mock-header">
+          <span></span><span></span><span></span>
+          <div class="mock-title">AI Interview Simulator</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-chat">
+            <div class="mock-msg ai">Tell me about yourself and why you're interested in this role at our company.</div>
+            <div class="mock-msg user">I'm a CS graduate passionate about full-stack development. I've built 3 projects using React and Node.js...</div>
+            <div class="mock-msg ai">Great! Can you walk me through a challenging project you've worked on?</div>
+            <div class="mock-typing"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FEATURES ═══════════ -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Features</div>
+      <h2>Everything You Need,<br>Nothing You Don't</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:var(--cyan-glow);color:var(--cyan)">🎯</div>
+        <h3>Role-Based Preparation</h3>
+        <p>Choose from 16 job roles. Every question, tip, and feedback is tailored to your target position.</p>
+        <div class="feat-tag">16 Roles</div>
+      </div>
+      <div class="feat-card reveal reveal-delay-1">
+        <div class="feat-icon" style="background:rgba(99,102,241,.12);color:var(--indigo)">📊</div>
+        <h3>Score Analytics</h3>
+        <p>Track your progress with detailed score breakdowns, time analytics, and improvement trends.</p>
+        <div class="feat-tag">Real-time</div>
+      </div>
+      <div class="feat-card reveal reveal-delay-2">
+        <div class="feat-icon" style="background:var(--gold-glow);color:var(--gold)">⏱️</div>
+        <h3>Timed Challenge Mode</h3>
+        <p>30-minute aptitude tests with per-question countdown. Simulates real placement test pressure.</p>
+        <div class="feat-tag">30 Min</div>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(0,230,118,.1);color:var(--green)">🛡️</div>
+        <h3>Cheat Detection</h3>
+        <p>14-point integrity monitoring. Tab switches, copy-paste, keyboard shortcuts — all tracked.</p>
+        <div class="feat-tag">14 Checks</div>
+      </div>
+      <div class="feat-card reveal reveal-delay-1">
+        <div class="feat-icon" style="background:rgba(255,82,82,.1);color:var(--red)">💡</div>
+        <h3>Smart Feedback</h3>
+        <p>AI analyzes your interview answers for structure, confidence, relevance, and keyword coverage.</p>
+        <div class="feat-tag">AI-Powered</div>
+      </div>
+      <div class="feat-card reveal reveal-delay-2">
+        <div class="feat-icon" style="background:rgba(161,140,209,.12);color:#a18cd1">🔐</div>
+        <h3>Enterprise Security</h3>
+        <p>JWT authentication, rate limiting, CSP headers, input validation. Production-grade from day one.</p>
+        <div class="feat-tag">SOC Ready</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ HOW IT WORKS ═══════════ -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">How It Works</div>
+      <h2>From Sign-Up to Placement<br>in Four Steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <h3>Create Profile</h3>
+        <p>Add your skills, education, and career goals. Our AI builds your personalized roadmap.</p>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">02</div>
+        <h3>Build Resume</h3>
+        <p>Generate an ATS-optimized resume with smart suggestions and professional templates.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">03</div>
+        <h3>Practice & Learn</h3>
+        <p>Take aptitude tests, practice HR interviews, and get real-time AI feedback on every answer.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">04</div>
+        <h3>Get Placed</h3>
+        <p>Walk into your campus interview fully prepared. Track your scores and confidence over time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ METRICS ═══════════ -->
+<section class="metrics">
+  <div class="container">
+    <div class="metric reveal"><div class="metric-val">10K+</div><div class="metric-label">Students Preparing</div></div>
+    <div class="metric reveal reveal-delay-1"><div class="metric-val">87%</div><div class="metric-label">Improvement Rate</div></div>
+    <div class="metric reveal reveal-delay-2"><div class="metric-val">4.8★</div><div class="metric-label">Average Rating</div></div>
+    <div class="metric reveal reveal-delay-3"><div class="metric-val">2.4x</div><div class="metric-label">Faster Preparation</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ TESTIMONIALS ═══════════ -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Testimonials</div>
+      <h2>Students Love CampusIQ</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p>"The HR interview practice was a game-changer. The AI asked exactly the kind of questions I got in my TCS interview. Got placed on day one!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:var(--grad1)">R</div>
+          <div><div class="testi-name">Rahul Sharma</div><div class="testi-role">Placed at TCS — ₹7.2 LPA</div></div>
+        </div>
+      </div>
+      <div class="testi reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p>"The aptitude tests with the 30-second timer per question trained me under real pressure. Scored 92% in my Infosys written test."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">P</div>
+          <div><div class="testi-name">Priya Menon</div><div class="testi-role">Placed at Infosys — ₹6.5 LPA</div></div>
+        </div>
+      </div>
+      <div class="testi reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p>"Resume builder saved me days of work. The skill catalog with logos and the ATS check gave me confidence before every application."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#10b981,#06b6d4)">A</div>
+          <div><div class="testi-name">Arjun Kumar</div><div class="testi-role">Placed at Wipro — ₹6.8 LPA</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PRICING ═══════════ -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Pricing</div>
+      <h2>Start Free. Upgrade When Ready.</h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div class="price-name">Starter</div>
+        <div class="price-desc">Perfect for exploring</div>
+        <div class="price-val">Free</div>
+        <div class="price-period">No credit card required</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> 5 Aptitude Tests / month</li>
+          <li><span class="check">✓</span> 3 HR Practice Sessions</li>
+          <li><span class="check">✓</span> Basic Resume Builder</li>
+          <li><span class="check">✓</span> Skill Profile (10 skills)</li>
+        </ul>
+        <button class="price-btn price-btn-outline">Get Started Free</button>
+      </div>
+      <div class="price-card featured reveal reveal-delay-1">
+        <div class="price-name">Pro</div>
+        <div class="price-desc">Best for serious candidates</div>
+        <div class="price-val"><span class="curr">₹</span>299<span class="curr">/mo</span></div>
+        <div class="price-period">Billed monthly · Cancel anytime</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Unlimited Aptitude Tests</li>
+          <li><span class="check">✓</span> Unlimited HR Practice</li>
+          <li><span class="check">✓</span> ATS-Optimized Resume</li>
+          <li><span class="check">✓</span> AI Answer Feedback</li>
+          <li><span class="check">✓</span> Score Analytics & History</li>
+          <li><span class="check">✓</span> All 16 HR Roles</li>
+        </ul>
+        <button class="price-btn price-btn-primary">Start Pro Trial →</button>
+      </div>
+      <div class="price-card reveal reveal-delay-2">
+        <div class="price-name">Campus</div>
+        <div class="price-desc">For colleges & training cells</div>
+        <div class="price-val">Custom</div>
+        <div class="price-period">Volume pricing available</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Everything in Pro</li>
+          <li><span class="check">✓</span> Bulk student onboarding</li>
+          <li><span class="check">✓</span> Admin dashboard</li>
+          <li><span class="check">✓</span> Custom question banks</li>
+          <li><span class="check">✓</span> Priority support</li>
+        </ul>
+        <button class="price-btn price-btn-outline">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FINAL CTA ═══════════ -->
+<section class="final-cta">
+  <div class="container">
+    <h2 class="reveal">Ready to Get<br><span style="background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Placed?</span></h2>
+    <p class="reveal reveal-delay-1">Join thousands of students using AI to prepare smarter, practice better, and land their dream jobs.</p>
+    <button class="btn-hero btn-hero-primary reveal reveal-delay-2">Start Your Journey Free →</button>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-brand"><div class="brand-mark" style="width:28px;height:28px;font-size:.75rem">C</div>CampusIQ <span style="color:var(--cyan)">AI</span></div>
+        <p>The intelligent career preparation platform built for campus placements. AI-powered, student-first.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#">Resume Builder</a>
+        <a href="#">HR Practice</a>
+        <a href="#">Aptitude Tests</a>
+        <a href="#">Skill Profile</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#">Documentation</a>
+        <a href="#">Blog</a>
+        <a href="#">Placement Guide</a>
+        <a href="#">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 CampusIQ AI. All rights reserved.</p>
+      <div class="social">
+        <a href="#" title="GitHub">GH</a>
+        <a href="#" title="Twitter">X</a>
+        <a href="#" title="LinkedIn">in</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Scroll reveal */
+const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* Nav scroll */
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+</script>
+
+</body>
+</html>

@@ -16,10 +16,10 @@ class CertificateCreate(CertificateBase):
 
 
 class CertificateUpdate(BaseModel):
-    certificate_name: str | None = None
-    issuer: str | None = None
+    certificate_name: str | None = Field(None, max_length=200)
+    issuer: str | None = Field(None, max_length=150)
     issue_date: date | None = None
-    credential_id: str | None = None
+    credential_id: str | None = Field(None, max_length=200)
     credential_url: HttpUrl | None = None
 
 

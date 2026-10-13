@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 class ProjectBase(BaseModel):
     title: str = Field(..., min_length=3, max_length=200)
-    description: str = Field(..., min_length=10)
+    description: str = Field(..., min_length=10, max_length=5000)
     technologies: str = Field(..., min_length=2, max_length=255)
     github_url: HttpUrl | None = None
     live_demo_url: HttpUrl | None = None
@@ -17,7 +17,7 @@ class ProjectCreate(ProjectBase):
 
 class ProjectUpdate(BaseModel):
     title: str | None = Field(None, min_length=3, max_length=200)
-    description: str | None = Field(None, min_length=10)
+    description: str | None = Field(None, min_length=10, max_length=5000)
     technologies: str | None = Field(None, min_length=2, max_length=255)
     github_url: HttpUrl | None = None
     live_demo_url: HttpUrl | None = None

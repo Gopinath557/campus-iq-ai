@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CampusIQ AI profile workspace" />
+  <title>CampusIQ AI | Profile workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+
+  <header class="topbar">
+    <a class="brand" href="index.html"><span id="brand-avatar"></span>CampusIQ <span>AI</span></a>
+    <nav>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="resume.html">Resume</a>
+      <a href="interview.html">HR Practice</a>
+      <a href="aptitude.html">Aptitude</a>
+    </nav>
+  </header>
+
+  <main id="top" class="workspace">
+    <!-- Hero -->
+    <section class="hero">
+      <p class="eyebrow">Your career workspace</p>
+      <h1>Build your student profile.</h1>
+      <p>Your details are saved privately in this browser. Start building your career-ready profile.</p>
+        <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="interview.html">Start Virtual HR Interview &rarr;</a>
+        <a class="btn btn-secondary btn-lg" href="resume.html">Generate ATS Resume &rarr;</a>
+      </div>
+    </section>
+
+    <!-- Readiness Dashboard -->
+    <section class="card dashboard-card" id="dashboard" aria-labelledby="dashboard-title">
+      <div class="readiness">
+        <div class="progress-ring">
+          <strong id="readiness-score">0</strong>
+          <span>%</span>
+        </div>
+        <div>
+          <h2 id="dashboard-title">Your career readiness</h2>
+          <h3 id="readiness-label">Start your profile</h3>
+          <p id="readiness-copy" style="color:var(--text-muted);font-size:.85rem;margin-top:4px">Add your details to see your readiness score.</p>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="metric-chip"><strong id="metric-skills">0</strong><span>Skills</span></div>
+        <div class="metric-chip"><strong id="metric-projects">0</strong><span>Projects</span></div>
+        <div class="metric-chip"><strong id="metric-answers">0</strong><span>Interviews</span></div>
+      </div>
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+        <button id="clear-data-btn" type="button" class="btn btn-secondary" style="font-size:.78rem;color:var(--red);border-color:var(--red)">Clear All Local Data</button>
+      </div>
+    </section>
+
+    <!-- Profile + Summary Grid -->
+    <section class="grid">
+      <article class="card profile-panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">Profile</p><h2>Your details</h2></div>
+        </div>
+        <form id="profile-form">
+          <div class="form-group"><label>Full name</label><input id="full-name" required maxlength="100" placeholder="e.g. Gopinath P" /></div>
+          <div class="form-group"><label>Email address</label><input id="email" type="email" required placeholder="you@example.com" /></div>
+          <div class="form-group"><label>Register number</label><input id="register-number" required maxlength="20" placeholder="e.g. 22CS001" /></div>
+          <div class="form-group"><label>Department</label><input id="department" maxlength="100" placeholder="e.g. Computer Science" /></div>
+          <button type="submit" class="btn btn-primary">Save profile</button>
+        </form>
+        <p class="message" id="profile-message" role="status"></p>
+      </article>
+
+      <article class="card summary-panel">
+        <p class="eyebrow">Your profile</p>
+        <div id="avatar" class="avatar avatar-lg" style="background:var(--accent);color:#fff;display:grid;place-content:center;border-radius:50%;font-size:2rem;font-weight:700">?</div>
+        <h2 id="summary-name">Add your details</h2>
+        <p id="summary-info">Your profile summary will appear here.</p>
+        <div class="stat-row">
+          <div><strong id="skill-count">0</strong><span>Skills</span></div>
+          <div><strong id="project-count">0</strong><span>Projects</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Skills + Projects Grid -->
+    <section class="grid">
+      <article class="card">
+        <div class="section-heading">
+          <div><p class="eyebrow">Skills</p><h2>What you know</h2></div>
+        </div>
+        <div class="skill-add-row">
+          <select id="skill-category" class="input skill-cat-select">
+            <option value="">Category</option>
+            <option value="language">Programming Languages</option>
+            <option value="framework">Frameworks & Libraries</option>
+            <option value="database">Databases</option>
+            <option value="cloud">Cloud & DevOps</option>
+            <option value="tool">Tools & Platforms</option>
+            <option value="design">Design & UX</option>
+            <option value="soft">Soft Skills</option>
+            <option value="domain">Domain Knowledge</option>
+          </select>
+          <form class="inline-form" id="skill-form">
+            <input id="skill-input" class="input" required maxlength="60" placeholder="e.g. Python, React, Docker" list="skill-datalist" />
+            <datalist id="skill-datalist"></datalist>
+            <button type="submit" class="btn btn-primary">Add</button>
+          </form>
+        </div>
+        <div class="skill-suggest-row" id="skill-suggest-row"></div>
+        <ul class="tag-list" id="skill-list"></ul>
+        <div class="empty-state" id="skills-empty">
+          <div class="empty-icon">&#9881;</div>
+          <p>Add your technical and soft skills</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="section-heading">
+          <div><p class="eyebrow">Projects</p><h2>What you built</h2></div>
+        </div>
+        <form class="project-form" id="project-form">
+          <div class="form-group"><input id="project-title" class="input" required maxlength="100" placeholder="Project title" /></div>
+          <div class="form-group"><textarea id="project-description" class="input" maxlength="300" placeholder="A short description"></textarea></div>
+          <button type="submit" class="btn btn-primary">Add project</button>
+        </form>
+        <ul class="project-list" id="project-list"></ul>
+        <div class="empty-state" id="projects-empty">
+          <div class="empty-icon">&#128196;</div>
+          <p>Add projects you've built or contributed to</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Resume + Interview Features -->
+    <section class="feature-grid">
+      <article class="card" id="resume">
+        <div class="section-heading">
+          <div><p class="eyebrow">Resume enhancer</p><h2>Make your resume stronger</h2></div>
+        </div>
+        <form id="resume-form">
+          <div class="form-group"><label>Career objective</label><textarea id="objective" maxlength="450" placeholder="Example: Computer Science student seeking a software engineering internship…"></textarea></div>
+          <div class="form-group"><label>Key achievement</label><input id="achievement" maxlength="180" class="input" placeholder="Example: Built a student project used by 100 classmates" /></div>
+          <button type="submit" class="btn btn-primary">Save resume content</button>
+        </form>
+        <div class="resume-preview">
+          <p class="eyebrow">Resume preview</p>
+          <h3 id="resume-name">Your name</h3>
+          <p id="resume-contact" style="color:var(--text-muted);font-size:.85rem">Email · Department</p>
+          <h4>Objective</h4>
+          <p id="resume-objective">Add an objective to begin.</p>
+          <h4>Skills</h4>
+          <p id="resume-skills">Add skills to your profile.</p>
+          <h4>Achievement</h4>
+          <p id="resume-achievement">Add one achievement that shows your impact.</p>
+        </div>
+        <a class="resume-link" href="resume.html">Open ATS-friendly resume generator &rarr;</a>
+      </article>
+
+      <article class="card" id="interview">
+        <div class="section-heading">
+          <div><p class="eyebrow">Virtual HR interview</p><h2>Practice your answer</h2></div>
+        </div>
+        <div class="hr-dashboard">
+          <div class="video-stage">
+            <div class="home-hr-character" id="home-hr-character">
+              <svg viewBox="0 0 260 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                <defs>
+                  <linearGradient id="home-skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5c8a0"/><stop offset="100%" stop-color="#e8b088"/></linearGradient>
+                  <linearGradient id="home-hair" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2a1a0a"/><stop offset="100%" stop-color="#1a0e04"/></linearGradient>
+                  <linearGradient id="home-blazer" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2d4a"/><stop offset="100%" stop-color="#0f1e33"/></linearGradient>
+                  <linearGradient id="home-desk" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/></linearGradient>
+                </defs>
+                <rect x="10" y="275" width="240" height="65" rx="6" fill="url(#home-desk)" stroke="#94a3b8" stroke-width="1"/>
+                <rect x="20" y="275" width="220" height="3" rx="1.5" fill="#94a3b8"/>
+                <g class="home-torso-group">
+                  <path d="M85 195 Q85 175 100 170 L130 165 L160 170 Q175 175 175 195 L180 275 L80 275 Z" fill="url(#home-blazer)" stroke="#334155" stroke-width="0.8"/>
+                  <path d="M108 175 L120 210 L130 195" fill="#152640" stroke="#334155" stroke-width="0.5"/>
+                  <path d="M152 175 L140 210 L130 195" fill="#152640" stroke="#334155" stroke-width="0.5"/>
+                  <path d="M118 170 L130 180 L142 170" fill="#d4e0f0" stroke="#b8c8e0" stroke-width="0.5"/>
+                  <path d="M118 170 L115 195 L145 195 L142 170 Z" fill="#e8eef8"/>
+                  <circle cx="130" cy="210" r="2" fill="#64748b"/>
+                  <circle cx="130" cy="228" r="2" fill="#64748b"/>
+                  <circle cx="130" cy="246" r="2" fill="#64748b"/>
+                  <path d="M128 178 L132 178 L133 205 L130 210 L127 205 Z" fill="#6366f1"/>
+                  <path d="M127 205 L130 215 L133 205 Z" fill="#4f46e5"/>
+                </g>
+                <path d="M85 195 Q70 220 65 260 Q63 270 75 272 L80 270 Q78 240 90 210 Z" fill="url(#home-blazer)" stroke="#334155" stroke-width="0.5"/>
+                <path d="M175 195 Q190 220 195 260 Q197 270 185 272 L180 270 Q182 240 170 210 Z" fill="url(#home-blazer)" stroke="#334155" stroke-width="0.5"/>
+                <ellipse cx="72" cy="270" rx="12" ry="8" fill="url(#home-skin)"/>
+                <ellipse cx="188" cy="270" rx="12" ry="8" fill="url(#home-skin)"/>
+                <rect x="122" y="148" width="16" height="24" rx="5" fill="url(#home-skin)"/>
+                <ellipse cx="130" cy="115" rx="48" ry="55" fill="url(#home-skin)"/>
+                <path d="M82 100 Q82 55 130 50 Q178 55 182 100 Q180 80 165 72 Q150 65 130 64 Q110 65 95 72 Q80 80 82 100 Z" fill="url(#home-hair)"/>
+                <path d="M82 100 Q78 108 82 115" fill="url(#home-hair)"/>
+                <path d="M182 100 Q186 108 182 115" fill="url(#home-hair)"/>
+                <ellipse cx="82" cy="118" rx="7" ry="10" fill="url(#home-skin)"/>
+                <ellipse cx="178" cy="118" rx="7" ry="10" fill="url(#home-skin)"/>
+                <circle cx="82" cy="126" r="2.5" fill="#d4af60"/>
+                <circle cx="178" cy="126" r="2.5" fill="#d4af60"/>
+                <path d="M96 94 Q105 89 118 93" fill="none" stroke="#2a1a0a" stroke-width="2" stroke-linecap="round"/>
+                <path d="M142 93 Q155 89 164 94" fill="none" stroke="#2a1a0a" stroke-width="2" stroke-linecap="round"/>
+                <ellipse cx="110" cy="108" rx="14" ry="10" fill="white"/>
+                <ellipse cx="112" cy="108" rx="7" ry="7.5" fill="#2a1a0a"/>
+                <circle cx="114" cy="106" r="2.5" fill="white"/>
+                <ellipse cx="150" cy="108" rx="14" ry="10" fill="white"/>
+                <ellipse cx="152" cy="108" rx="7" ry="7.5" fill="#2a1a0a"/>
+                <circle cx="154" cy="106" r="2.5" fill="white"/>
+                <path d="M127 115 Q130 126 133 115" fill="none" stroke="#d4a078" stroke-width="1.2" stroke-linecap="round"/>
+                <rect x="92" y="98" width="34" height="22" rx="11" fill="none" stroke="#5a7090" stroke-width="1.8"/>
+                <rect x="134" y="98" width="34" height="22" rx="11" fill="none" stroke="#5a7090" stroke-width="1.8"/>
+                <line x1="126" y1="108" x2="134" y2="108" stroke="#5a7090" stroke-width="1.5"/>
+                <line x1="92" y1="108" x2="83" y2="114" stroke="#5a7090" stroke-width="1.5"/>
+                <line x1="168" y1="108" x2="177" y2="114" stroke="#5a7090" stroke-width="1.5"/>
+                <g class="home-mouth">
+                  <path d="M118 134 Q130 142 142 134" fill="#c06060" stroke="#a04848" stroke-width="0.8"/>
+                  <line x1="122" y1="134" x2="138" y2="134" stroke="white" stroke-width="1.5" opacity="0.7"/>
+                </g>
+                <rect x="95" y="200" width="35" height="16" rx="2" fill="#e8eef8" stroke="#c0cfe0" stroke-width="0.5"/>
+                <text x="112" y="210" text-anchor="middle" fill="#1a2d4a" font-size="5.5" font-weight="600">CAMPUSIQ</text>
+              </svg>
+              <div class="home-hr-status"><div class="home-hr-dot"></div><span id="ai-status">AI interviewer &middot; Ready</span></div>
+            </div>
+          </div>
+          <div class="hr-insights">
+            <p class="eyebrow">Interview analytics</p>
+            <div class="hr-score">
+              <strong id="hr-score">0</strong>
+              <span>/ 100</span>
+              <small>Practice score</small>
+            </div>
+            <div class="hr-metrics">
+              <div><strong id="answer-count">0</strong><span>Answers</span></div>
+              <div><strong id="word-count">0</strong><span>Words</span></div>
+              <div><strong id="question-count">5</strong><span>Questions</span></div>
+            </div>
+            <p class="hr-tip" id="hr-tip">Start with a confident introduction.</p>
+          </div>
+        </div>
+        <div class="camera-actions"><button id="ask-question" type="button" class="btn btn-primary">AI ask question</button></div>
+        <p class="question-label">Virtual interviewer asks</p>
+        <h3 id="interview-question">Tell me about yourself.</h3>
+        <textarea id="interview-answer" class="input" maxlength="1000" placeholder="Type your answer here. Aim for a clear 60–90 second response."></textarea>
+        <div class="interview-actions">
+          <button id="start-mic" type="button" class="btn btn-primary">Start microphone</button>
+          <button id="stop-mic" class="btn btn-secondary" type="button" disabled>Stop microphone</button>
+          <button id="save-answer" class="btn btn-secondary" type="button">Save answer</button>
+          <button id="next-question" class="btn btn-secondary" type="button">Next question</button>
+        </div>
+        <p class="message" id="interview-feedback" role="status"></p>
+        <div class="tips">
+          <strong>Quick tip</strong>
+          <p>Use the STAR method: Situation, Task, Action, Result.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="particles.js"></script>
+  <script src="ui.js"></script>
+  <script src="skills.js"></script>
+  <script src="api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -41,9 +41,3 @@ class Achievement(Base):
     )
 
     student: Mapped["Student"] = relationship(back_populates="achievements")
-
-
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from app.models.student import Student

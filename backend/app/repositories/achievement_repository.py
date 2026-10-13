@@ -27,6 +27,14 @@ class AchievementRepository:
         )
 
     @staticmethod
+    def get_by_student(db: Session, student_id: int):
+        return (
+            db.query(Achievement)
+            .filter(Achievement.student_id == student_id)
+            .all()
+        )
+
+    @staticmethod
     def update(
         db: Session,
         db_achievement: Achievement,

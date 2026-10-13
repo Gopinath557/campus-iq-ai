@@ -17,15 +17,11 @@ class AchievementService:
 
     @staticmethod
     def get_achievement_by_id(db: Session, achievement_id: int):
-        achievement = AchievementRepository.get_by_id(db, achievement_id)
+        return AchievementRepository.get_by_id(db, achievement_id)
 
-        if not achievement:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Achievement not found",
-            )
-
-        return achievement
+    @staticmethod
+    def get_achievements_by_student(db: Session, student_id: int):
+        return AchievementRepository.get_by_student(db, student_id)
 
     @staticmethod
     def update_achievement(
